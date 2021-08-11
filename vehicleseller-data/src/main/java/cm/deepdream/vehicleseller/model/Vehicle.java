@@ -81,7 +81,5 @@ public class Vehicle {
 	
 	@Column(name = "description")
 	private String description ;
-	
-	@Embedded
-	private Picture picture1 ;
+
 }
