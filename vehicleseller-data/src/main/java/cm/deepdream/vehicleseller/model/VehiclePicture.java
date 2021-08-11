@@ -1,7 +1,10 @@
 package cm.deepdream.vehicleseller.model;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,16 +13,19 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Country {
+public class VehiclePicture {
 	@Id
 	@Column(name = "id")
 	private Long id ;
 	
-	@Column(name = "code")
-	private String code ;
+	@Column(name = "index")
+	private Integer index ;
 	
-	@Column(name = "label")
-	private String label ;
+	@ManyToOne
+	@JoinColumn (name = "id_vehicle")
+	private Vehicle vehicle ;
 	
-
+	@Embedded
+	private Picture picture ;
+	
 }

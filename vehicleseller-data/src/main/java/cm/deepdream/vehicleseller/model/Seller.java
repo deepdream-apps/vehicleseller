@@ -10,16 +10,22 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Country {
+public class Seller {
 	@Id
 	@Column(name = "id")
 	private Long id ;
 	
-	@Column(name = "code")
-	private String code ;
+	@Column(name = "first_name")
+	private String firstName ;
 	
-	@Column(name = "label")
-	private String label ;
+	@Column(name = "last_name")
+	private String lastName ;
 	
-
+	@Column(name = "email_address")
+	private String emailAddress ;
+	
+	@Column(name = "phone_number")
+	private String phoneNumber ;
+	
+	
 }

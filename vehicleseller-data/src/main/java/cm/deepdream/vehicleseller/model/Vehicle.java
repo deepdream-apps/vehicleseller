@@ -72,6 +72,10 @@ public class Vehicle {
 	@JoinColumn (name = "id_country")
 	private Country country ;
 	
+	@ManyToOne
+	@JoinColumn (name = "id_seller")
+	private Seller seller ;
+	
 	@Embedded
 	private Price price ;
 	
