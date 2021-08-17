@@ -103,6 +103,20 @@ public class VehicleWS {
 		Model model = new Model() ;
 		model.setId(modelId);
 		
+		if(brandId != null && modelId == null && ! fuel.equals("")) {
+			
+		}else if(brandId != null && modelId == null && ! fuel.equals("")) {
+			
+		}else if(brandId != null && modelId == null && ! fuel.equals("")) {
+			
+		}else if(brandId != null && modelId == null && ! fuel.equals("")) {
+			
+		}else if(brandId != null && modelId == null && ! fuel.equals("")) {
+			
+		} else if(brandId != null && modelId == null && ! fuel.equals("")) {
+			
+		}
+		
 		List<Vehicle> listVehicles = vehicleService.get(brand, model, yearFrom, fuel, yearTo, 
 				mileageMin, mileageMax, priceMin, priceMax, choice) ;
 	    return Response.ok(listVehicles).build();
