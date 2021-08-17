@@ -23,7 +23,7 @@ public class Brand {
 		 @AttributeOverride( name = "path", column = @Column(name = "picture_path")),
 		 @AttributeOverride( name = "subPath", column = @Column(name = "picture_subpath")),
 		 @AttributeOverride( name = "fileName", column = @Column(name = "picture_filename")),
-		 @AttributeOverride( name = "contentType", column = @Column(name = "photo_content_type"))
+		 @AttributeOverride( name = "contentType", column = @Column(name = "picture_content_type"))
 	})
 	private Picture picture ;
 	

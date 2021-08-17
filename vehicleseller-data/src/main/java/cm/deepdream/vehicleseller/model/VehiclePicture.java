@@ -28,4 +28,6 @@ public class VehiclePicture {
 	@Embedded
 	private Picture picture ;
 	
+	@Column(name = "label")
+	private String label ;
 }

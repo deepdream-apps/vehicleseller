@@ -11,6 +11,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import cm.deepdream.vehicleseller.model.Brand;
 import cm.deepdream.vehicleseller.model.Model;
 import cm.deepdream.vehicleseller.service.ModelService;
 import lombok.extern.slf4j.Slf4j;
@@ -78,6 +80,16 @@ public class ModelWS {
 	    	return Response.noContent().build();
 	    }
 	    return Response.ok(existingModel).build();
+	}
+	
+	@GET
+	@Path("/brand/{brandId}")
+	@Produces("application/json")
+	public Response getModels(@PathParam("brandId") Long brandId) throws URISyntaxException {
+		Brand brand = new Brand() ;
+		brand.setId(brandId);
+	    List<Model> listModels = modelService.getModels(brand) ;
+	    return Response.ok(listModels).build();
 	}
 	
 	

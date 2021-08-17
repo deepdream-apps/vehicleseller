@@ -21,5 +21,6 @@ public class Country {
 	@Column(name = "label")
 	private String label ;
 	
-
+	@Column(name = "phone_code")
+	private String phoneCode ;
 }

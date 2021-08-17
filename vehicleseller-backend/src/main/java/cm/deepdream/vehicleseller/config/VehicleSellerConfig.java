@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import cm.deepdream.vehicleseller.webservice.BrandWS;
 import cm.deepdream.vehicleseller.webservice.CountryWS;
 import cm.deepdream.vehicleseller.webservice.ModelWS;
+import cm.deepdream.vehicleseller.webservice.SellerWS;
 import cm.deepdream.vehicleseller.webservice.TownWS;
 import cm.deepdream.vehicleseller.webservice.UserWS;
 import cm.deepdream.vehicleseller.webservice.VehicleWS;
@@ -17,6 +18,7 @@ public class VehicleSellerConfig extends ResourceConfig{
 		register(TownWS.class) ;
 		register(VehicleWS.class) ;
 		register(UserWS.class) ;
+		register(SellerWS.class) ;
 	}
 	
 }

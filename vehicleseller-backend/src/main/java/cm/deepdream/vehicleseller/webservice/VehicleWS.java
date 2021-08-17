@@ -10,7 +10,13 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
+
+import org.dom4j.rule.Mode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+
+import cm.deepdream.vehicleseller.model.Brand;
+import cm.deepdream.vehicleseller.model.Model;
 import cm.deepdream.vehicleseller.model.Vehicle;
 import cm.deepdream.vehicleseller.service.VehicleService;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +26,8 @@ import lombok.extern.slf4j.Slf4j;
 public class VehicleWS {
 	@Autowired
 	private VehicleService vehicleService ;
-	
+	@Autowired
+	private Environment env ;
 	
 	@POST
 	@Path("/add/{id}")
@@ -77,6 +84,28 @@ public class VehicleWS {
 	    	return Response.noContent().build();
 	    }
 	    return Response.ok(existingVehicle).build();
+	}
+	
+	
+	@GET
+	@Path("/search/{brandId}/{modelId}/{fuel}/{yearFrom}/{yearTo}/{mileageMin}/{mileageMax}/{priceMin}/{priceMax}")
+	@Produces("application/json")
+	public Response getVehicles(@PathParam("brandId") Long brandId, @PathParam("modelId") Long modelId,
+			@PathParam("fuel") String fuel, @PathParam("yearFrom") Long yearFrom, @PathParam("yearTo") Long yearTo,
+			@PathParam("mileageMin") Long mileageMin, @PathParam("mileageMax") Long mileageMax, @PathParam("priceMin") Long priceMin, 
+			@PathParam("priceMax") Long priceMax) throws URISyntaxException {
+		
+		int choice = - 1 ;
+		
+		Brand brand = new Brand() ;
+		brand.setId(brandId);
+		
+		Model model = new Model() ;
+		model.setId(modelId);
+		
+		List<Vehicle> listVehicles = vehicleService.get(brand, model, yearFrom, fuel, yearTo, 
+				mileageMin, mileageMax, priceMin, priceMax, choice) ;
+	    return Response.ok(listVehicles).build();
 	}
 	
 	

@@ -2,6 +2,11 @@ package cm.deepdream.vehicleseller.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import org.hibernate.type.descriptor.sql.TinyIntTypeDescriptor;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,11 +20,17 @@ public class Seller {
 	@Column(name = "id")
 	private Long id ;
 	
+	@Column(name = "type")
+	private Integer type ;
+	
 	@Column(name = "first_name")
 	private String firstName ;
 	
 	@Column(name = "last_name")
 	private String lastName ;
+	
+	@Column(name = "label")
+	private String label ;
 	
 	@Column(name = "email_address")
 	private String emailAddress ;
@@ -27,5 +38,7 @@ public class Seller {
 	@Column(name = "phone_number")
 	private String phoneNumber ;
 	
-	
+	@ManyToOne
+	@JoinColumn (name = "id_country")
+	private Country country ;
 }

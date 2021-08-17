@@ -3,6 +3,8 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import cm.deepdream.vehicleseller.model.Brand;
 import cm.deepdream.vehicleseller.model.Model;
 import cm.deepdream.vehicleseller.repository.ModelRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +34,12 @@ public class ModelService {
 	public Model get (Long id) {
 		Model savedModel  = modelRepository.findById(id).orElseGet(null) ;
 		return savedModel ;
+	}
+	
+	
+	public List<Model> getModels (Brand brand) {
+		List<Model> modelsList =  modelRepository.findByBrand(brand) ;
+		return modelsList ;
 	}
 	
 	
