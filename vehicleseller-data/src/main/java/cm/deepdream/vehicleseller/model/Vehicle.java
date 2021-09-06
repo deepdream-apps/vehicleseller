@@ -22,10 +22,7 @@ public class Vehicle {
 	
 	@Column(name = "registration_number")
 	private String registrationNumber ;
-	
-	@Column(name = "label")
-	private String label ;
-	
+
 	@ManyToOne
 	@JoinColumn (name = "id_brand")
 	private Brand brand ;
@@ -60,24 +57,10 @@ public class Vehicle {
 	
 	@Column(name = "seats")
 	private Integer seats ;
-	
-	@Column(name = "weight")
-	private Integer weight ;
-	
-	@Column(name = "published")
-	@DateTimeFormat (pattern = "yyyy-MM-dd HH:mm")
-	private LocalDateTime published ;
-	
+
 	@ManyToOne
-	@JoinColumn (name = "id_country")
-	private Country country ;
-	
-	@ManyToOne
-	@JoinColumn (name = "id_seller")
-	private Seller seller ;
-	
-	@Embedded
-	private Price price ;
+	@JoinColumn (name = "id_town")
+	private Town town ;
 	
 	@Column(name = "description")
 	private String description ;

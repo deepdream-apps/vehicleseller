@@ -9,12 +9,10 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import org.dom4j.rule.Mode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-
 import cm.deepdream.vehicleseller.model.Brand;
 import cm.deepdream.vehicleseller.model.Model;
 import cm.deepdream.vehicleseller.model.Vehicle;
@@ -34,9 +32,7 @@ public class VehicleWS {
 	@Consumes("application/json")
 	@Produces("application/json")
 	public Response addVehicle(Vehicle vehicle) throws URISyntaxException {
-	    if(vehicle.getLabel() == null || vehicle.getLabel().equals("")) {
-	            return Response.status(400).entity("Please provide all mandatory inputs").build();
-	     }
+	   
 	    Vehicle newVehicle = vehicleService.create(vehicle) ;
 	    return Response.ok(newVehicle).build();
 	}
@@ -47,14 +43,11 @@ public class VehicleWS {
 	@Consumes("application/json")
 	@Produces("application/json")
 	public Response updateVehicle(@PathParam("id") Long id, Vehicle vehicle) throws URISyntaxException {
-	    if(vehicle.getLabel() == null || vehicle.getLabel().equals("")) {
-	         return Response.status(400).build();
-	     }
+	  
 	    Vehicle existingVehicle = vehicleService.get(id) ;
 	    if(existingVehicle == null) {
 	    	return Response.status(400).build();
 	    }
-	    existingVehicle.setLabel(vehicle.getLabel());
 	    Vehicle upadatedVehicle = vehicleService.create(existingVehicle) ;
 	    return Response.ok(upadatedVehicle).build();
 	}
@@ -89,7 +82,7 @@ public class VehicleWS {
 	
 	@GET
 	@Path("/search/{brandId}/{modelId}/{fuel}/{yearFrom}/{yearTo}/{mileageMin}/{mileageMax}/{priceMin}/{priceMax}")
-	@Produces("application/json")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getVehicles(@PathParam("brandId") Long brandId, @PathParam("modelId") Long modelId,
 			@PathParam("fuel") String fuel, @PathParam("yearFrom") Long yearFrom, @PathParam("yearTo") Long yearTo,
 			@PathParam("mileageMin") Long mileageMin, @PathParam("mileageMax") Long mileageMax, @PathParam("priceMin") Long priceMin, 
@@ -103,18 +96,18 @@ public class VehicleWS {
 		Model model = new Model() ;
 		model.setId(modelId);
 		
-		if(brandId != null && modelId == null && ! fuel.equals("")) {
-			
-		}else if(brandId != null && modelId == null && ! fuel.equals("")) {
-			
-		}else if(brandId != null && modelId == null && ! fuel.equals("")) {
-			
-		}else if(brandId != null && modelId == null && ! fuel.equals("")) {
-			
-		}else if(brandId != null && modelId == null && ! fuel.equals("")) {
-			
-		} else if(brandId != null && modelId == null && ! fuel.equals("")) {
-			
+		if(brandId != 0 && modelId == 0 && ! fuel.equals("empty")) {
+			choice = 0 ;  
+		}else if(brandId != 0 && modelId == 0 && ! fuel.equals("empty")) {
+			choice = 1 ;  
+		}else if(brandId != 0 && modelId == 0 && ! fuel.equals("empty")) {
+			choice = 2 ;  
+		}else if(brandId != 0 && modelId == 0 && ! fuel.equals("empty")) {
+			choice = 3 ;  
+		}else if(brandId != 0 && modelId == 0 && ! fuel.equals("empty")) {
+			choice = 4 ;  
+		} else if(brandId != 0 && modelId == 0 && ! fuel.equals("empty")) {
+			choice = 5 ;  
 		}
 		
 		List<Vehicle> listVehicles = vehicleService.get(brand, model, yearFrom, fuel, yearTo, 

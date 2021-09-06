@@ -21,4 +21,6 @@ public class VehicleSellerConfig extends ResourceConfig{
 		register(SellerWS.class) ;
 	}
 	
+	
+	
 }

@@ -1,14 +1,11 @@
 package cm.deepdream.vehicleseller.model;
+import java.time.LocalDateTime;
 import javax.persistence.Column;
-
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
-import org.springframework.boot.SpringApplication;
-
+import org.springframework.format.annotation.DateTimeFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,20 +14,24 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class VehiclePicture {
+public class VehicleAssignment {
 	@Id
 	@Column(name = "id")
 	private Long id ;
-	
+
 	@ManyToOne
 	@JoinColumn (name = "id_vehicle")
 	private Vehicle vehicle ;
 	
-	@Embedded
-	private Picture picture ;
+	@ManyToOne
+	@JoinColumn (name = "id_driver")
+	private Driver driver ;
 	
-	@Column(name = "label")
-	private String label ;
+	@Column(name = "start_date")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+	private LocalDateTime startDate ;
 	
-	
+	@Column(name = "end_date")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+	private LocalDateTime endDate ;
 }

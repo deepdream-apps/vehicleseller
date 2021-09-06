@@ -23,6 +23,11 @@ public class VehiclesellerBackendApplication {
 	private String secretKey ;
 	@Value("${app.vehicleseller.aws.regionCode}")
 	private String regionCode ;
+	
+	public VehiclesellerBackendApplication() {
+		super() ;
+	}
+
 
 	public static void main(String[] args) {
 		SpringApplication.run(VehiclesellerBackendApplication.class, args);
