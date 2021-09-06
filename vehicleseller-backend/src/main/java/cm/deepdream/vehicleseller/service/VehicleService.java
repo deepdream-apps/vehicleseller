@@ -41,43 +41,6 @@ public class VehicleService {
 	public List<Vehicle> get (Brand brand, Model model, Long yearFrom, String fuel, Long yearTo, Long mileageMin, Long mileageMax, 
 			Long priceMin, Long priceMax, int choice) {
 		List<Vehicle> listVehicles = null ;
-		switch (choice) {
-			case 0 :{
-				listVehicles = vehicleRepository.findByBrandAndFuelAndYearBetweenAndMileageBetweenAndPriceBetween(brand, 
-						fuel, yearFrom, yearTo, mileageMin, mileageMax, priceMin, priceMax) ;
-				break ;
-			}
-			
-			case 1 :{
-				listVehicles = vehicleRepository.findByModelAndFuelAndYearBetweenAndMileageBetweenAndPriceBetween(model, 
-						fuel, yearFrom, yearTo, mileageMin, mileageMax, priceMin, priceMax) ;
-				break ;
-			}
-			
-			case 2 :{
-				listVehicles = vehicleRepository.findByFuelAndYearBetweenAndMileageBetweenAndPriceBetween( 
-						fuel, yearFrom, yearTo, mileageMin, mileageMax, priceMin, priceMax) ;
-				break ;
-			}
-			
-			case 3 :{
-				listVehicles = vehicleRepository.findByBrandAndYearBetweenAndMileageBetweenAndPriceBetween(brand, 
-						yearFrom, yearTo, mileageMin, mileageMax, priceMin, priceMax) ;
-				break ;
-			}
-			
-			case 4 :{
-				listVehicles = vehicleRepository.findByModelAndYearBetweenAndMileageBetweenAndPriceBetween(model, 
-						yearFrom, yearTo, mileageMin, mileageMax, priceMin, priceMax) ;
-				break ;
-			}
-			
-			case 5 :{
-				listVehicles = vehicleRepository.findByYearBetweenAndMileageBetweenAndPriceBetween( 
-						yearFrom, yearTo, mileageMin, mileageMax, priceMin, priceMax) ;
-				break ;
-			}
-		}
 		return listVehicles ;
 	}
 	
