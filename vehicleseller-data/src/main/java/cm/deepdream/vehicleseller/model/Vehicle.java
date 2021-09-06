@@ -57,6 +57,9 @@ public class Vehicle {
 	
 	@Column(name = "seats")
 	private Integer seats ;
+	
+	@Embedded
+	private Picture picture ;
 
 	@ManyToOne
 	@JoinColumn (name = "id_town")
