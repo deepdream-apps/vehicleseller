@@ -39,19 +39,7 @@ public class Vehicle {
 	
 	@Column(name = "status")
 	private String status ;
-	
-	@Column(name = "fuel")
-	private String fuel ;
-	
-	@Column(name = "gearbox")
-	private String gearbox ;
-	
-	@Column(name = "transmission")
-	private String transmission ;
-	
-	@Column(name = "mileage")
-	private Long mileage ;
-	
+
 	@Column(name = "doors")
 	private Integer doors ;
 	
