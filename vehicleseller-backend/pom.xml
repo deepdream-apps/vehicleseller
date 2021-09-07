@@ -96,7 +96,7 @@
 				<groupId>com.spotify</groupId>
 				<artifactId>dockerfile-maven-plugin</artifactId>
 				<configuration>
-					<repository>vehicleseller/configsrv</repository>
+					<repository>vehicleseller/backend</repository>
 					<tag>${project.version}</tag>
 					<buildArg>
 						<JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>

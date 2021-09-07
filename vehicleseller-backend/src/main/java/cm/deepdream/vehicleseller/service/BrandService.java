@@ -1,12 +1,15 @@
 package cm.deepdream.vehicleseller.service;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import cm.deepdream.vehicleseller.model.Brand;
 import cm.deepdream.vehicleseller.repository.BrandRepository;
 import lombok.extern.slf4j.Slf4j;
-
+@Transactional
 @Service
 @Slf4j
 public class BrandService {

@@ -9,14 +9,13 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import cm.deepdream.vehicleseller.model.Brand;
 import cm.deepdream.vehicleseller.service.BrandService;
-import lombok.extern.slf4j.Slf4j;
 
 @Path("/api/brand")
-@Slf4j
 public class BrandWS {
 	@Autowired
 	private BrandService brandService ;
@@ -24,8 +23,8 @@ public class BrandWS {
 	
 	@POST
 	@Path("/add/{id}")
-	@Consumes("application/json")
-	@Produces("application/json")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response addBrand(Brand brand) throws URISyntaxException {
 	    if(brand.getLabel() == null || brand.getLabel().equals("")) {
 	            return Response.status(400).entity("Please provide all mandatory inputs").build();
@@ -37,8 +36,8 @@ public class BrandWS {
 	
 	@PUT
 	@Path("/update/{id}")
-	@Consumes("application/json")
-	@Produces("application/json")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateBrand(@PathParam("id") Long id, Brand brand) throws URISyntaxException {
 	    if(brand.getLabel() == null || brand.getLabel().equals("")) {
 	         return Response.status(400).build();
@@ -57,7 +56,7 @@ public class BrandWS {
 	
 	@DELETE
 	@Path("/{id}")
-	@Consumes("application/json")
+	@Consumes(MediaType.APPLICATION_JSON)
 	public Response deleteBrand(@PathParam("id") Long id) throws URISyntaxException {
 	    Brand existingBrand = brandService.get(id) ;
 	    if(existingBrand == null) {
@@ -71,7 +70,7 @@ public class BrandWS {
 	
 	@GET
 	@Path("/id/{id}")
-	@Produces("application/json")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getBrand(@PathParam("id") Long id) throws URISyntaxException {
 	    Brand existingBrand = brandService.get(id) ;
 	    if(existingBrand == null) {
@@ -83,7 +82,7 @@ public class BrandWS {
 	
 	@GET
 	@Path("/all")
-	@Produces("application/json")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllBrands() throws URISyntaxException {
 	    List<Brand> listBrands = brandService.getAll() ;
 	    return Response.ok(listBrands).build();
