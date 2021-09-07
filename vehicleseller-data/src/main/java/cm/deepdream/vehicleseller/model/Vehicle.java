@@ -20,10 +20,6 @@ public class Vehicle {
 	
 	@Column(name = "registration_number")
 	private String registrationNumber ;
-
-	@ManyToOne
-	@JoinColumn (name = "id_brand")
-	private Brand brand ;
 	
 	@ManyToOne
 	@JoinColumn (name = "id_model")
