@@ -17,7 +17,6 @@ import cm.deepdream.vehicleseller.model.Brand;
 import cm.deepdream.vehicleseller.model.Model;
 import cm.deepdream.vehicleseller.model.Vehicle;
 import cm.deepdream.vehicleseller.service.VehicleService;
-import lombok.extern.slf4j.Slf4j;
 
 @Path("/api/vehicle")
 public class VehicleWS {
