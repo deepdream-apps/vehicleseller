@@ -24,6 +24,7 @@ public class VehiclesellerBackendApplication {
 	@Value("${app.vehicleseller.aws.regionCode}")
 	private String regionCode ;
 	
+	
 	public VehiclesellerBackendApplication() {
 		super() ;
 	}

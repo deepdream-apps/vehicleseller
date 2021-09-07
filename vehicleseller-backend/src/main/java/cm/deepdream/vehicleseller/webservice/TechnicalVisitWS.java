@@ -11,26 +11,22 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import cm.deepdream.vehicleseller.model.Town;
-import cm.deepdream.vehicleseller.service.TownService;
-import lombok.extern.slf4j.Slf4j;
+import cm.deepdream.vehicleseller.model.TechnicalVisit;
+import cm.deepdream.vehicleseller.service.TechnicalVisitService;
 
-@Path("/api/town")
+@Path("/api/technical-visit")
 public class TechnicalVisitWS {
 	@Autowired
-	private TownService townService ;
+	private TechnicalVisitService technicalVisitService ;
 	
 	
 	@POST
 	@Path("/add/{id}")
 	@Consumes("application/json")
 	@Produces("application/json")
-	public Response addTown(Town town) throws URISyntaxException {
-	    if(town.getLabel() == null || town.getLabel().equals("")) {
-	            return Response.status(400).entity("Please provide all mandatory inputs").build();
-	     }
-	    Town newTown = townService.create(town) ;
-	    return Response.ok(newTown).build();
+	public Response addTechnicalVisit(TechnicalVisit technicalVisit) throws URISyntaxException {
+	    TechnicalVisit newTechnicalVisit = technicalVisitService.create(technicalVisit) ;
+	    return Response.ok(newTechnicalVisit).build();
 	}
 	
 	
@@ -38,18 +34,13 @@ public class TechnicalVisitWS {
 	@Path("/update/{id}")
 	@Consumes("application/json")
 	@Produces("application/json")
-	public Response updateTown(@PathParam("id") Long id, Town town) throws URISyntaxException {
-	    if(town.getLabel() == null || town.getLabel().equals("")) {
-	         return Response.status(400).build();
-	     }
-	    Town existingTown = townService.get(id) ;
-	    if(existingTown == null) {
+	public Response updateTechnicalVisit(@PathParam("id") Long id, TechnicalVisit technicalVisit) throws URISyntaxException {
+	    TechnicalVisit existingTechnicalVisit = technicalVisitService.get(id) ;
+	    if(existingTechnicalVisit == null) {
 	    	return Response.status(400).build();
 	    }
-	    existingTown.setLabel(town.getLabel());
-	    existingTown.setCode(town.getCode());
-	    Town upadatedTown = townService.create(existingTown) ;
-	    return Response.ok(upadatedTown).build();
+	    TechnicalVisit upadatedTechnicalVisit = technicalVisitService.create(existingTechnicalVisit) ;
+	    return Response.ok(upadatedTechnicalVisit).build();
 	}
 	
 	
@@ -57,12 +48,12 @@ public class TechnicalVisitWS {
 	@DELETE
 	@Path("/{id}")
 	@Consumes("application/json")
-	public Response deleteTown(@PathParam("id") Long id) throws URISyntaxException {
-	    Town existingTown = townService.get(id) ;
-	    if(existingTown == null) {
+	public Response deleteTechnicalVisit(@PathParam("id") Long id) throws URISyntaxException {
+	    TechnicalVisit existingTechnicalVisit = technicalVisitService.get(id) ;
+	    if(existingTechnicalVisit == null) {
 	    	return Response.status(400).build();
 	    }
-	    townService.delete(existingTown) ;
+	    technicalVisitService.delete(existingTechnicalVisit) ;
 	    return Response.ok(1).build();
 	}
 	
@@ -71,20 +62,20 @@ public class TechnicalVisitWS {
 	@GET
 	@Path("/id/{id}")
 	@Produces("application/json")
-	public Response getTown(@PathParam("id") Long id) throws URISyntaxException {
-	    Town existingTown = townService.get(id) ;
-	    if(existingTown == null) {
+	public Response getTechnicalVisit(@PathParam("id") Long id) throws URISyntaxException {
+	    TechnicalVisit existingTechnicalVisit = technicalVisitService.get(id) ;
+	    if(existingTechnicalVisit == null) {
 	    	return Response.noContent().build();
 	    }
-	    return Response.ok(existingTown).build();
+	    return Response.ok(existingTechnicalVisit).build();
 	}
 	
 	
 	@GET
 	@Path("/all")
 	@Produces("application/json")
-	public Response getAllTowns() throws URISyntaxException {
-	    List<Town> listTowns = townService.getAll() ;
-	    return Response.ok(listTowns).build();
+	public Response getAllTechnicalVisits() throws URISyntaxException {
+	    List<TechnicalVisit> listTechnicalVisits = technicalVisitService.getAll() ;
+	    return Response.ok(listTechnicalVisits).build();
 	}
 }

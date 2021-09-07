@@ -9,6 +9,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -24,8 +25,8 @@ public class VehicleAssignmentWS {
 	
 	@POST
 	@Path("/add/{id}")
-	@Consumes("application/json")
-	@Produces("application/json")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response addVehicleAssignment(VehicleAssignment vehicleAssignment) throws URISyntaxException {
 	   
 	    VehicleAssignment newVehicleAssignment = vehicleAssignmentService.create(vehicleAssignment) ;
@@ -35,8 +36,8 @@ public class VehicleAssignmentWS {
 	
 	@PUT
 	@Path("/update/{id}")
-	@Consumes("application/json")
-	@Produces("application/json")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateVehicleAssignment(@PathParam("id") Long id, VehicleAssignment vehicleAssignment) throws URISyntaxException {
 	  
 	    VehicleAssignment existingVehicleAssignment = vehicleAssignmentService.get(id) ;
@@ -51,7 +52,7 @@ public class VehicleAssignmentWS {
 	
 	@DELETE
 	@Path("/{id}")
-	@Consumes("application/json")
+	@Consumes(MediaType.APPLICATION_JSON)
 	public Response deleteVehicleAssignment(@PathParam("id") Long id) throws URISyntaxException {
 	    VehicleAssignment existingVehicleAssignment = vehicleAssignmentService.get(id) ;
 	    if(existingVehicleAssignment == null) {
@@ -65,7 +66,7 @@ public class VehicleAssignmentWS {
 	
 	@GET
 	@Path("/id/{id}")
-	@Produces("application/json")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getVehicleAssignment(@PathParam("id") Long id) throws URISyntaxException {
 	    VehicleAssignment existingVehicleAssignment = vehicleAssignmentService.get(id) ;
 	    if(existingVehicleAssignment == null) {
@@ -77,7 +78,7 @@ public class VehicleAssignmentWS {
 	
 	@GET
 	@Path("/all")
-	@Produces("application/json")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllVehicleAssignments() throws URISyntaxException {
 	    List<VehicleAssignment> listVehicleAssignments = vehicleAssignmentService.getAll() ;
 	    return Response.ok(listVehicleAssignments).build();

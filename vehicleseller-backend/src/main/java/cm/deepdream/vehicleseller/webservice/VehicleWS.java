@@ -20,7 +20,6 @@ import cm.deepdream.vehicleseller.service.VehicleService;
 import lombok.extern.slf4j.Slf4j;
 
 @Path("/api/vehicle")
-@Slf4j
 public class VehicleWS {
 	@Autowired
 	private VehicleService vehicleService ;
@@ -29,10 +28,9 @@ public class VehicleWS {
 	
 	@POST
 	@Path("/add/{id}")
-	@Consumes("application/json")
-	@Produces("application/json")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response addVehicle(Vehicle vehicle) throws URISyntaxException {
-	   
 	    Vehicle newVehicle = vehicleService.create(vehicle) ;
 	    return Response.ok(newVehicle).build();
 	}
@@ -40,10 +38,9 @@ public class VehicleWS {
 	
 	@PUT
 	@Path("/update/{id}")
-	@Consumes("application/json")
-	@Produces("application/json")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateVehicle(@PathParam("id") Long id, Vehicle vehicle) throws URISyntaxException {
-	  
 	    Vehicle existingVehicle = vehicleService.get(id) ;
 	    if(existingVehicle == null) {
 	    	return Response.status(400).build();
@@ -56,7 +53,7 @@ public class VehicleWS {
 	
 	@DELETE
 	@Path("/{id}")
-	@Consumes("application/json")
+	@Consumes(MediaType.APPLICATION_JSON)
 	public Response deleteVehicle(@PathParam("id") Long id) throws URISyntaxException {
 	    Vehicle existingVehicle = vehicleService.get(id) ;
 	    if(existingVehicle == null) {
@@ -70,7 +67,7 @@ public class VehicleWS {
 	
 	@GET
 	@Path("/id/{id}")
-	@Produces("application/json")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getVehicle(@PathParam("id") Long id) throws URISyntaxException {
 	    Vehicle existingVehicle = vehicleService.get(id) ;
 	    if(existingVehicle == null) {
@@ -118,7 +115,7 @@ public class VehicleWS {
 	
 	@GET
 	@Path("/all")
-	@Produces("application/json")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllVehicles() throws URISyntaxException {
 	    List<Vehicle> listVehicles = vehicleService.getAll() ;
 	    return Response.ok(listVehicles).build();
