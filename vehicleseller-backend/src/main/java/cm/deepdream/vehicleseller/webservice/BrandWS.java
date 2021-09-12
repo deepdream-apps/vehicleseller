@@ -22,7 +22,7 @@ public class BrandWS {
 	
 	
 	@POST
-	@Path("/add/{id}")
+	@Path("/add")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response addBrand(Brand brand) throws URISyntaxException {
@@ -55,7 +55,7 @@ public class BrandWS {
 	
 	
 	@DELETE
-	@Path("/{id}")
+	@Path("/id/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response deleteBrand(@PathParam("id") Long id) throws URISyntaxException {
 	    Brand existingBrand = brandService.get(id) ;
