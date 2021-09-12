@@ -75,7 +75,24 @@ public class ModelWebServiceTest {
 		
 		assertTrue(testedModel.getLabel().equals(returnedModel.getLabel()) &&
 				testedModel.getDescription().equals(returnedModel.getDescription()) &&
-				testedModel.getBrand().equals(returnedModel.getBrand())) ;
+				returnedModel.getBrand().equals(testedModel.getBrand())) ;
+	}
+	
+	
+	@Test
+	public void testDelete() {
+		Brand  testedBrand = new Brand(104L, null, "Renault ", "Peugeot is a french brand") ;
+		jdbcTemplate.update("insert into brand (id, label, description) values (?, ?, ?)",
+				testedBrand.getId(), testedBrand.getLabel(),  testedBrand.getDescription());
+		
+		Model  testedModel = new Model(103L, "Peugeot 600", testedBrand, "Peugeot 600 is a french brand") ;
+		jdbcTemplate.update("insert into model (id, label, description, id_brand) values (?, ?, ?, ?)",
+				testedModel.getId(), testedModel.getLabel(),  testedModel.getDescription(), testedModel.getBrand().getId());
+
+		Model returnedModel = restTemplate.getForObject("/api/model/id/{id}",  Model.class, 103L) ;
+		assertTrue(returnedModel != null && 
+				returnedModel.equals(testedModel) &&
+				returnedModel.getBrand().equals(testedModel.getBrand()));
 	}
 	
 	

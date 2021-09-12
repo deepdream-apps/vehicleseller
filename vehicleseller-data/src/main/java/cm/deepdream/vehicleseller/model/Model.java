@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,7 +18,8 @@ public class Model {
 	@Id
 	@Column(name = "id")
 	private Long id ;
-
+	
+	@NotNull(message = "Label should not be null")
 	@Column(name = "label")
 	private String label ;
 	
