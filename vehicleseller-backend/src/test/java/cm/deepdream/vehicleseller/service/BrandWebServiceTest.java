@@ -81,7 +81,7 @@ public class BrandWebServiceTest {
 		assertEquals(listBrands2.size(), listBrands.size());
 	}
 	
-	public class BrandRowMapper implements RowMapper<Brand> {
+	public static class BrandRowMapper implements RowMapper<Brand> {
 	    @Override
 	    public Brand mapRow(ResultSet rs, int rowNum) throws SQLException {
 	    	Brand brand = new Brand();

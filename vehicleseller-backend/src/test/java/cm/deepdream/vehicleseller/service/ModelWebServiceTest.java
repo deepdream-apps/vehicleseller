@@ -12,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.context.annotation.Import;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -35,53 +34,65 @@ public class ModelWebServiceTest {
 	
 	@Test
 	public void testAdd() {
-		Brand  testedBrand = new Brand(1L, null, "Toyota", "Toyota is the best in Africa") ;
-		Model testedModel = new Model(1L, "Corolla", testedBrand, "Corolla is the most popular Toyota brand") ;
+		Brand  testedBrand = new Brand(101L, null, "Toyota", "Toyota is the best in Africa") ;
+		jdbcTemplate.update("insert into brand (id, label, description) values (?, ?, ?)", 
+				testedBrand.getId(), testedBrand.getLabel(),  testedBrand.getDescription());
+		
+		Model testedModel = new Model(101L, "Corolla", testedBrand, "Corolla is the most popular Toyota model") ;
 		ResponseEntity<Model> response =  restTemplate.postForEntity("/api/model/add", testedModel, Model.class) ;
-		Model returnedModel = jdbcTemplate.queryForObject("select * from model where id=?", 
-				new Object[] {1L}, new ModelRowMapper(jdbcTemplate)) ;
-		assertTrue(response.getStatusCode() == HttpStatus.OK  && returnedModel.equals(testedModel));
+		Model returnedModel = null ;
+		try {
+			returnedModel = jdbcTemplate.queryForObject("select * from model where id=?", 
+				new Object[] {testedModel.getId()}, new ModelRowMapper(jdbcTemplate)) ;
+		}catch(Exception ex) {}
+		assertTrue(testedModel.equals(returnedModel));
 	}
 	
 	
 	@Test
 	public void testUpdate() {
-		Brand testedBrand1 = new Brand(2L, null, "Mercedes", "Mercedes is the second in Africa") ;
+		Brand testedBrand1 = new Brand(102L, null, "Mercedes", "Mercedes is the second in Africa") ;
 		jdbcTemplate.update("insert into brand (id, label, description) values (?, ?, ?)", 
-				2L, testedBrand1.getLabel(),  testedBrand1.getDescription());
+				testedBrand1.getId(), testedBrand1.getLabel(),  testedBrand1.getDescription());
 		
-		Brand testedBrand2 = new Brand(3L, null, "Wolsvagen", "Wolsvagen is the second in Africa") ;
+		Brand testedBrand2 = new Brand(103L, null, "Wolsvagen", "Wolsvagen is the second in Africa") ;
 		jdbcTemplate.update("insert into brand (id, label, description) values (?, ?, ?)", 
-				3L, testedBrand2.getLabel(),  testedBrand2.getDescription());
+				testedBrand2.getId(), testedBrand2.getLabel(),  testedBrand2.getDescription());
 		
-		Model testedModel = new Model(2L, "Mercedes 500", testedBrand1, "Mercedes 500 is the best Mercedes brand for me") ;
-		testedModel.setBrand(testedBrand1);
+		Model testedModel = new Model(102L, "Mercedes 500", testedBrand1, 
+				"Mercedes 500 is the best Mercedes brand for me") ;
+		
 		jdbcTemplate.update("insert into model (id, label, description, id_brand) values (?, ?, ?, ?)", 
-				3L, testedModel.getLabel(),  testedModel.getDescription(), testedModel.getBrand());
+				testedModel.getId(), testedModel.getLabel(),  testedModel.getDescription(), testedModel.getBrand().getId());
+		testedModel.setLabel("Mercedes 600");
+		testedModel.setDescription("Mercedes 600 is the best Mercedes brand for me");
+		testedModel.setBrand(testedBrand2);
 		
-		restTemplate.put("/api/model/update/{id}", testedModel, 2L) ;
+		restTemplate.put("/api/model/update/{id}", testedModel, testedModel.getId()) ;
 		
 		Model returnedModel = jdbcTemplate.queryForObject("select * from model where id=?", 
-				new Object[] {2L}, new ModelRowMapper(jdbcTemplate)) ;
+				new Object[] {testedModel.getId()}, new ModelRowMapper(jdbcTemplate)) ;
 		
 		assertTrue(testedModel.getLabel().equals(returnedModel.getLabel()) &&
-				testedModel.getDescription().equals(returnedModel.getDescription()) && 
+				testedModel.getDescription().equals(returnedModel.getDescription()) &&
 				testedModel.getBrand().equals(returnedModel.getBrand())) ;
 	}
 	
 	
 	@Test
 	public void testGet() {
-		Brand  testedBrand = new Brand(4L, null, "Peugeot", "Peugeot is a french brand") ;
+		Brand  testedBrand = new Brand(104L, null, "Peugeot", "Peugeot is a french brand") ;
 		jdbcTemplate.update("insert into brand (id, label, description) values (?, ?, ?)",
 				testedBrand.getId(), testedBrand.getLabel(),  testedBrand.getDescription());
 		
-		Model  testedModel = new Model(3L, "Peugeot 600", testedBrand, "Peugeot 600 is a french brand") ;
-		jdbcTemplate.update("insert into brand (id, label, description, id_brand) values (?, ?, ?, ?)",
-				testedModel.getId(), testedModel.getLabel(),  testedModel.getDescription(), testedModel.getBrand());
+		Model  testedModel = new Model(103L, "Peugeot 600", testedBrand, "Peugeot 600 is a french brand") ;
+		jdbcTemplate.update("insert into model (id, label, description, id_brand) values (?, ?, ?, ?)",
+				testedModel.getId(), testedModel.getLabel(),  testedModel.getDescription(), testedModel.getBrand().getId());
 
-		Model returnedModel = restTemplate.getForObject("/api/model/id/{id}",  Model.class, 3L) ;
-		assertTrue(returnedModel != null && returnedModel.equals(testedModel));
+		Model returnedModel = restTemplate.getForObject("/api/model/id/{id}",  Model.class, 103L) ;
+		assertTrue(returnedModel != null && 
+				returnedModel.equals(testedModel) &&
+				returnedModel.getBrand().equals(testedModel.getBrand()));
 	}
 	
 	
@@ -95,7 +106,7 @@ public class ModelWebServiceTest {
 	
 	
 	
-	public class ModelRowMapper implements RowMapper<Model> {
+	public static class ModelRowMapper implements RowMapper<Model> {
 		private JdbcTemplate jdbcTemplate ;
 		
 		public ModelRowMapper(JdbcTemplate jdbcTemplate) {
@@ -109,7 +120,7 @@ public class ModelWebServiceTest {
 	    	model.setLabel(rs.getString("label"));
 	    	model.setDescription(rs.getString("description")) ;
 	    	Brand brand = jdbcTemplate.queryForObject("select * from brand where id= ?",  
-	    			Brand.class, rs.getLong("id_brand")) ;
+	    			new Object[] {rs.getLong("id_brand")}, new BrandWebServiceTest.BrandRowMapper()) ;
 	    	model.setBrand(brand);
 	        return model;
 	    }
