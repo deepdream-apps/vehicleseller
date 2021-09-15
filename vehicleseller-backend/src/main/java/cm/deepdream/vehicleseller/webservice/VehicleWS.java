@@ -26,7 +26,7 @@ public class VehicleWS {
 	private Environment env ;
 	
 	@POST
-	@Path("/add/{id}")
+	@Path("/add")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response addVehicle(Vehicle vehicle) throws URISyntaxException {
@@ -51,7 +51,7 @@ public class VehicleWS {
 	
 	
 	@DELETE
-	@Path("/{id}")
+	@Path("/id/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response deleteVehicle(@PathParam("id") Long id) throws URISyntaxException {
 	    Vehicle existingVehicle = vehicleService.get(id) ;

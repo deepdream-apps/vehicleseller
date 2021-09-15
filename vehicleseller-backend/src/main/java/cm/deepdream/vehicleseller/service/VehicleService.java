@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.amazonaws.services.s3.AmazonS3;
 import cm.deepdream.vehicleseller.model.Brand;
 import cm.deepdream.vehicleseller.model.Model;
 import cm.deepdream.vehicleseller.model.Vehicle;
@@ -10,10 +11,11 @@ import cm.deepdream.vehicleseller.repository.VehicleRepository;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
-@Slf4j
 public class VehicleService {
 	@Autowired
 	private VehicleRepository vehicleRepository ;
+	@Autowired
+	private AmazonS3 amazonS3 ;
 	
 	public Vehicle create (Vehicle vehicle) {
 		Vehicle savedVehicle  = vehicleRepository.save(vehicle) ;

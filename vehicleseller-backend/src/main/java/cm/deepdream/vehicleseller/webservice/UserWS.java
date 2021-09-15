@@ -1,6 +1,7 @@
 package cm.deepdream.vehicleseller.webservice;
 import java.net.URISyntaxException;
 import java.util.List;
+import javax.inject.Singleton;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -13,10 +14,9 @@ import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import cm.deepdream.vehicleseller.model.User;
 import cm.deepdream.vehicleseller.service.UserService;
-import lombok.extern.slf4j.Slf4j;
 
 @Path("/api/user")
-@Slf4j
+@Singleton
 public class UserWS {
 	@Autowired
 	private UserService userService ;

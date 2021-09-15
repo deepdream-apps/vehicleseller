@@ -1,6 +1,7 @@
 package cm.deepdream.vehicleseller.webservice;
 import java.net.URISyntaxException;
 import java.util.List;
+import javax.inject.Singleton;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -15,6 +16,7 @@ import cm.deepdream.vehicleseller.model.TechnicalVisit;
 import cm.deepdream.vehicleseller.service.TechnicalVisitService;
 
 @Path("/api/technical-visit")
+@Singleton
 public class TechnicalVisitWS {
 	@Autowired
 	private TechnicalVisitService technicalVisitService ;

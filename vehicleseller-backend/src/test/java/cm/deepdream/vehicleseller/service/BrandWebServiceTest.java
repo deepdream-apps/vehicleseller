@@ -3,6 +3,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.sql.PreparedStatement;
@@ -70,6 +71,22 @@ public class BrandWebServiceTest {
 
 		Brand returnedBrand = restTemplate.getForObject("/api/brand/id/{id}",  Brand.class, 3L) ;
 		assertTrue(returnedBrand != null && returnedBrand.equals(testedBrand));
+	}
+	
+	
+	@Test
+	public void testDelete() {
+		Brand  testedBrand = new Brand(4L, null, "Peugeot 4", "Peugeot is a french brand") ;
+		jdbcTemplate.update("insert into brand (id, label, description) values (?, ?, ?)",
+				testedBrand.getId(), testedBrand.getLabel(),  testedBrand.getDescription());
+
+		restTemplate.delete("/api/brand/id/{id}", testedBrand.getId()) ;
+		
+		Brand returnedBrand = null ;
+		try {
+			returnedBrand = jdbcTemplate.queryForObject("/api/brand/id/{id}", Brand.class, testedBrand.getId()) ;
+		}catch(Exception ex) {} ;
+		assertNull(returnedBrand);
 	}
 	
 	

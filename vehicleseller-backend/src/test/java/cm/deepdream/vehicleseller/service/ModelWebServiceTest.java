@@ -2,6 +2,8 @@ package cm.deepdream.vehicleseller.service;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.sql.ResultSet;
@@ -34,11 +36,11 @@ public class ModelWebServiceTest {
 	
 	@Test
 	public void testAdd() {
-		Brand  testedBrand = new Brand(101L, null, "Toyota", "Toyota is the best in Africa") ;
+		Brand  testedBrand = new Brand(101L, null, "Toyota 101", "Toyota is the best in Africa") ;
 		jdbcTemplate.update("insert into brand (id, label, description) values (?, ?, ?)", 
 				testedBrand.getId(), testedBrand.getLabel(),  testedBrand.getDescription());
 		
-		Model testedModel = new Model(101L, "Corolla", testedBrand, "Corolla is the most popular Toyota model") ;
+		Model testedModel = new Model(101L, "Corolla 101", testedBrand, "Corolla is the most popular Toyota model") ;
 		ResponseEntity<Model> response =  restTemplate.postForEntity("/api/model/add", testedModel, Model.class) ;
 		Model returnedModel = null ;
 		try {
@@ -51,15 +53,15 @@ public class ModelWebServiceTest {
 	
 	@Test
 	public void testUpdate() {
-		Brand testedBrand1 = new Brand(102L, null, "Mercedes", "Mercedes is the second in Africa") ;
+		Brand testedBrand1 = new Brand(102L, null, "Mercedes 102", "Mercedes is the second in Africa") ;
 		jdbcTemplate.update("insert into brand (id, label, description) values (?, ?, ?)", 
 				testedBrand1.getId(), testedBrand1.getLabel(),  testedBrand1.getDescription());
 		
-		Brand testedBrand2 = new Brand(103L, null, "Wolsvagen", "Wolsvagen is the second in Africa") ;
+		Brand testedBrand2 = new Brand(103L, null, "Wolsvagen 103", "Wolsvagen is the second in Africa") ;
 		jdbcTemplate.update("insert into brand (id, label, description) values (?, ?, ?)", 
 				testedBrand2.getId(), testedBrand2.getLabel(),  testedBrand2.getDescription());
 		
-		Model testedModel = new Model(102L, "Mercedes 500", testedBrand1, 
+		Model testedModel = new Model(102L, "Mercedes 500 102", testedBrand1, 
 				"Mercedes 500 is the best Mercedes brand for me") ;
 		
 		jdbcTemplate.update("insert into model (id, label, description, id_brand) values (?, ?, ?, ?)", 
@@ -81,36 +83,43 @@ public class ModelWebServiceTest {
 	
 	@Test
 	public void testDelete() {
-		Brand  testedBrand = new Brand(104L, null, "Renault ", "Peugeot is a french brand") ;
+		Brand  testedBrand = new Brand(104L, null, "Renault 104", "Peugeot is a french brand") ;
 		jdbcTemplate.update("insert into brand (id, label, description) values (?, ?, ?)",
 				testedBrand.getId(), testedBrand.getLabel(),  testedBrand.getDescription());
 		
-		Model  testedModel = new Model(103L, "Peugeot 600", testedBrand, "Peugeot 600 is a french brand") ;
+		Model  testedModel = new Model(103L, "Peugeot 600 103", testedBrand, "Peugeot 600 is a french brand") ;
 		jdbcTemplate.update("insert into model (id, label, description, id_brand) values (?, ?, ?, ?)",
 				testedModel.getId(), testedModel.getLabel(),  testedModel.getDescription(), testedModel.getBrand().getId());
 
-		Model returnedModel = restTemplate.getForObject("/api/model/id/{id}",  Model.class, 103L) ;
-		assertTrue(returnedModel != null && 
-				returnedModel.equals(testedModel) &&
-				returnedModel.getBrand().equals(testedModel.getBrand()));
+		restTemplate.delete("/api/model/id/{id}",  testedModel.getId()) ;
+		
+		Model returnedModel = null ;
+		try {
+			returnedModel = jdbcTemplate.queryForObject("select * from model where id=?", 
+				new Object[] {testedModel.getId()}, new ModelRowMapper(jdbcTemplate)) ;
+		}catch(Exception ex) {}
+		
+		assertNull(returnedModel);
 	}
 	
 	
 	@Test
 	public void testGet() {
-		Brand  testedBrand = new Brand(104L, null, "Peugeot", "Peugeot is a french brand") ;
+		Brand  testedBrand = new Brand(105L, null, "Peugeot 105 105", "Peugeot is a french brand") ;
 		jdbcTemplate.update("insert into brand (id, label, description) values (?, ?, ?)",
 				testedBrand.getId(), testedBrand.getLabel(),  testedBrand.getDescription());
 		
-		Model  testedModel = new Model(103L, "Peugeot 600", testedBrand, "Peugeot 600 is a french brand") ;
+		Model  testedModel = new Model(104L, "Peugeot 600 104", testedBrand, "Peugeot 600 is a french brand") ;
 		jdbcTemplate.update("insert into model (id, label, description, id_brand) values (?, ?, ?, ?)",
 				testedModel.getId(), testedModel.getLabel(),  testedModel.getDescription(), testedModel.getBrand().getId());
 
-		Model returnedModel = restTemplate.getForObject("/api/model/id/{id}",  Model.class, 103L) ;
+		Model returnedModel = restTemplate.getForObject("/api/model/id/{id}",  Model.class, testedModel.getId()) ;
 		assertTrue(returnedModel != null && 
 				returnedModel.equals(testedModel) &&
 				returnedModel.getBrand().equals(testedModel.getBrand()));
 	}
+	
+	
 	
 	
 	@Test

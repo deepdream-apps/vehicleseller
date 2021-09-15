@@ -1,6 +1,8 @@
 package cm.deepdream.vehicleseller.webservice;
 import java.net.URISyntaxException;
 import java.util.List;
+
+import javax.inject.Singleton;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import cm.deepdream.vehicleseller.model.InsuranceContract;
 import cm.deepdream.vehicleseller.service.InsuranceContractService;
 @Path("/api/insurance-contract")
+@Singleton
 public class InsuranceContractWS {
 	@Autowired
 	private InsuranceContractService insuranceContractService ;

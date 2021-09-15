@@ -1,6 +1,8 @@
 package cm.deepdream.vehicleseller.webservice;
 import java.net.URISyntaxException;
 import java.util.List;
+
+import javax.inject.Singleton;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -15,6 +17,7 @@ import cm.deepdream.vehicleseller.model.Reservation;
 import cm.deepdream.vehicleseller.service.ReservationService;
 
 @Path("/api/reservation")
+@Singleton
 public class ReservationWS {
 	@Autowired
 	private ReservationService reservationService ;
