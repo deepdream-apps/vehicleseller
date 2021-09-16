@@ -1,10 +1,14 @@
 package cm.deepdream.vehicleseller;
+import java.security.Principal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import com.amazonaws.auth.AWSCredentials;
@@ -12,7 +16,7 @@ import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-
+@RestController
 @SpringBootApplication
 public class VehiclesellerBackendApplication {
 	@Autowired
@@ -60,6 +64,11 @@ public class VehiclesellerBackendApplication {
 			}
 		};
 	}
+	
+	@GetMapping("/user")
+    public Principal user(Principal p){
+        return p;
+    }
 	
 	//https://howtodoinjava.com/spring-boot2/spring-cors-configuration/
 
