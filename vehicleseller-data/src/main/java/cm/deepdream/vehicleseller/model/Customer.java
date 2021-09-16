@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.Email;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import lombok.AllArgsConstructor;
@@ -35,6 +36,7 @@ public class Customer {
 	@JoinColumn(name = "id_town")
 	private Town town ;
 	
+	@Email
 	@Column(name = "email_address")
 	private String emailAddress ;
 	
