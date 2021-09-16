@@ -35,6 +35,7 @@ public class VehiclesellerBackendApplication {
 
 
 	public static void main(String[] args) {
+		System.setProperty("jasypt.encryptor.password", "password");
 		SpringApplication.run(VehiclesellerBackendApplication.class, args);
 	}
 	
