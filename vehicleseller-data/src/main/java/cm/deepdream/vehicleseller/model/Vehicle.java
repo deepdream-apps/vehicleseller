@@ -43,10 +43,6 @@ public class Vehicle {
 	@Embedded
 	private Picture picture ;
 
-	@ManyToOne
-	@JoinColumn (name = "id_town")
-	private Town town ;
-	
 	@Column(name = "description")
 	private String description ;
 
