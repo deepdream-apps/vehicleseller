@@ -1,12 +1,15 @@
 pipeline {
   agent any
-	stages{
-	    
-	    stage('Build'){
-	        steps{
-	            echo 'Build the project'   
-	        }
+  tools {
+      maven "maven"
+      jdk "jdk8"
+   }
+   stages{    
+       stage('Build'){
+	    steps{
+	        echo 'Build the project'   
 	    }
+	}
 	    
 	    stage('Test'){
 	        steps{
