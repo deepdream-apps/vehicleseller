@@ -3,6 +3,7 @@ pipeline {
   tools {
       maven "maven"
       jdk "jdk"
+      git "git"
    }
    stages{    
        stage('Initialize'){
