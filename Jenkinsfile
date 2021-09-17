@@ -14,7 +14,7 @@ pipeline {
        stage('Build'){
 	    steps{
 	        echo 'Build the project'   
-		dir("C:/DEV/deploy/jenkins/workspace") {
+		dir("C:/DEV/deploy/jenkins/workspace") 
                 sh 'mvn clean package'
 	    }
 	}
