@@ -10,6 +10,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import cm.deepdream.vehicleseller.model.Customer;
@@ -22,9 +23,9 @@ public class CustomerWS {
 	
 	
 	@POST
-	@Path("/add/{id}")
-	@Consumes("application/json")
-	@Produces("application/json")
+	@Path("/add")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response addCustomer(Customer customer) throws URISyntaxException {
 	    Customer newCustomer = customerService.create(customer) ;
 	    return Response.ok(newCustomer).build();
@@ -33,8 +34,8 @@ public class CustomerWS {
 	
 	@PUT
 	@Path("/update/{id}")
-	@Consumes("application/json")
-	@Produces("application/json")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateCustomer(@PathParam("id") Long id, Customer customer) throws URISyntaxException {
 	    Customer existingCustomer = customerService.get(id) ;
 	    if(existingCustomer == null) {
@@ -48,7 +49,7 @@ public class CustomerWS {
 	
 	@DELETE
 	@Path("/{id}")
-	@Consumes("application/json")
+	@Consumes(MediaType.APPLICATION_JSON)
 	public Response deleteCustomer(@PathParam("id") Long id) throws URISyntaxException {
 	    Customer existingCustomer = customerService.get(id) ;
 	    if(existingCustomer == null) {
@@ -62,7 +63,7 @@ public class CustomerWS {
 	
 	@GET
 	@Path("/id/{id}")
-	@Produces("application/json")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getCustomer(@PathParam("id") Long id) throws URISyntaxException {
 	    Customer existingCustomer = customerService.get(id) ;
 	    if(existingCustomer == null) {
@@ -74,7 +75,7 @@ public class CustomerWS {
 	
 	@GET
 	@Path("/all")
-	@Produces("application/json")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllCustomers() throws URISyntaxException {
 	    List<Customer> listCountries = customerService.getAll() ;
 	    return Response.ok(listCountries).build();
