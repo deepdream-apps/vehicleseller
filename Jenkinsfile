@@ -12,23 +12,19 @@ pipeline {
 
    stages{    
        
-       stage('Build'){
+       stage('Build-And-Test'){
 	    steps{
 	       echo 'Checking out from Git Repo' 
 	       git 'https://github.com/deepdream-apps/vehicleseller.git'
 	       bat 'mvn -f vehicleseller-backend/pom.xml clean package'
+	       echo 'Buid and Test stage executed successfully'
 	    }
-	}
-	    
-	stage('Test'){
-	     steps{
-	        echo 'Test the project'    
-	     }
 	}
 	    
 	stage('Deploy'){
 	     steps{
 	        echo 'Deploy the project'
+		bat 'mvn -f vehicleseller-backend/pom.xml install'
 	     }
 	}
    }
