@@ -41,6 +41,7 @@ public class DriverWS {
 	    if(existingDriver == null) {
 	    	return Response.status(400).build();
 	    }
+	    existingDriver.setRegistrationNumber(driver.getRegistrationNumber());
 	    existingDriver.setBirthDay(driver.getBirthDay());
 	    existingDriver.setDriverLicence(driver.getDriverLicence());
 	    existingDriver.setFirstName(driver.getFirstName());

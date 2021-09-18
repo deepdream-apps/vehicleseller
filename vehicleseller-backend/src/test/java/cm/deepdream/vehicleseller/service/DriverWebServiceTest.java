@@ -39,7 +39,7 @@ public class DriverWebServiceTest {
 	@Test
 	public void testAdd() {
 		
-		DriverLicence driverLicence = new DriverLicence("100L", LocalDate.of(2020, 1, 12), LocalDate.of(2030, 1, 12)) ;
+		DriverLicence driverLicence = new DriverLicence("120L", LocalDate.of(2020, 1, 12), LocalDate.of(2030, 1, 12)) ;
 		Driver  testedDriver = new Driver(120L, "21M01", "Christian", "Owodo", 
 				"Homme", LocalDate.of(1980, 1, 12), LocalDate.of(2021, 4, 1),driverLicence, new Picture()) ;
 		ResponseEntity<Driver> response =   restTemplate.postForEntity("/api/driver/add", testedDriver, Driver.class) ;
@@ -55,11 +55,11 @@ public class DriverWebServiceTest {
 	
 	@Test
 	public void testUpdate() {
-		DriverLicence driverLicence = new DriverLicence("120L", LocalDate.of(2018, 1, 12), LocalDate.of(2028, 1, 12)) ;
+		DriverLicence driverLicence = new DriverLicence("121L", LocalDate.of(2018, 1, 12), LocalDate.of(2028, 1, 12)) ;
 		Driver  testedDriver = new Driver(121L, "21M02", "Herve", "Yombi", 
 				"Homme", LocalDate.of(1982, 11, 10), LocalDate.of(2019, 4, 10),driverLicence, new Picture()) ;
 		
-		jdbcTemplate.update("insert into driver (id, birth_day, expiration_date, issue_date, licence_id, first_name, last_name, content_type, filename, path, sub_path,registration_number, sex, recruit_day) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 
+		jdbcTemplate.update("insert into driver (id, birth_day, expiration_date, issue_date, licence_id, first_name, last_name, content_type, filename, path, sub_path,registration_number, sex, recruit_day) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 
 				testedDriver.getId(), testedDriver.getBirthDay(), testedDriver.getDriverLicence().getExpirationDate(), 
 				testedDriver.getDriverLicence().getIssueDate(), testedDriver.getDriverLicence().getLicenceId(), 
 				testedDriver.getFirstName(), testedDriver.getLastName(), testedDriver.getPhoto().getContentType(),
@@ -76,7 +76,7 @@ public class DriverWebServiceTest {
 		
 		Driver returnedDriver = jdbcTemplate.queryForObject("select * from driver where id=?", 
 				new Object[] {testedDriver.getId()}, new DriverRowMapper()) ;
-		assertTrue(returnedDriver.getId() == returnedDriver.getId()
+		assertTrue(returnedDriver.getId() == testedDriver.getId()
 				&& returnedDriver.getRegistrationNumber().equals(testedDriver.getRegistrationNumber())
 				&& returnedDriver.getFirstName().equals(testedDriver.getFirstName())
 				&& returnedDriver.getLastName().equals(testedDriver.getLastName())
@@ -86,11 +86,11 @@ public class DriverWebServiceTest {
 	
 	@Test
 	public void testGet() {
-		DriverLicence driverLicence = new DriverLicence("123L", LocalDate.of(2016, 11, 12), LocalDate.of(2026, 1, 12)) ;
+		DriverLicence driverLicence = new DriverLicence("122L", LocalDate.of(2016, 11, 12), LocalDate.of(2026, 1, 12)) ;
 		Driver  testedDriver = new Driver(122L, "21M02", "Moussa", "Yaya", 
 				"Homme", LocalDate.of(1992, 12, 10), LocalDate.of(2019, 4, 10),driverLicence, new Picture()) ;
 		
-		jdbcTemplate.update("insert into driver (id, birth_day, expiration_date, issue_date, licence_id, first_name, last_name, content_type, filename, path, sub_path,registration_number, sex, recruit_day) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 
+		jdbcTemplate.update("insert into driver (id, birth_day, expiration_date, issue_date, licence_id, first_name, last_name, content_type, filename, path, sub_path,registration_number, sex, recruit_day) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 
 				testedDriver.getId(), testedDriver.getBirthDay(), testedDriver.getDriverLicence().getExpirationDate(), 
 				testedDriver.getDriverLicence().getIssueDate(), testedDriver.getDriverLicence().getLicenceId(), 
 				testedDriver.getFirstName(), testedDriver.getLastName(), testedDriver.getPhoto().getContentType(),
@@ -109,9 +109,16 @@ public class DriverWebServiceTest {
 	
 	@Test
 	public void testDelete() {
-		DriverLicence driverLicence = new DriverLicence("124L", LocalDate.of(2016, 11, 12), LocalDate.of(2026, 1, 12)) ;
-		Driver  testedDriver = new Driver(122L, "21M04", "Bertrand", "Yaleu", 
+		DriverLicence driverLicence = new DriverLicence("123L", LocalDate.of(2016, 11, 12), LocalDate.of(2026, 1, 12)) ;
+		Driver  testedDriver = new Driver(123L, "21M04", "Bertrand", "Yaleu", 
 				"Homme", LocalDate.of(1992, 12, 10), LocalDate.of(2019, 4, 10),driverLicence, new Picture()) ;
+		
+		jdbcTemplate.update("insert into driver (id, birth_day, expiration_date, issue_date, licence_id, first_name, last_name, content_type, filename, path, sub_path,registration_number, sex, recruit_day) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 
+				testedDriver.getId(), testedDriver.getBirthDay(), testedDriver.getDriverLicence().getExpirationDate(), 
+				testedDriver.getDriverLicence().getIssueDate(), testedDriver.getDriverLicence().getLicenceId(), 
+				testedDriver.getFirstName(), testedDriver.getLastName(), testedDriver.getPhoto().getContentType(),
+				testedDriver.getPhoto().getFileName(), testedDriver.getPhoto().getPath(), testedDriver.getPhoto().getSubPath(),
+				testedDriver.getRegistrationNumber(),  testedDriver.getSex(), testedDriver.getRecruitDay());
 		
 		restTemplate.delete("/api/driver/id/{id}", testedDriver.getId()) ;
 		
