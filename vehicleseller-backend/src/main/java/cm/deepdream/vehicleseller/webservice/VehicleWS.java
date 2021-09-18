@@ -1,6 +1,7 @@
 package cm.deepdream.vehicleseller.webservice;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.logging.Logger;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -20,6 +21,7 @@ import cm.deepdream.vehicleseller.service.VehicleService;
 
 @Path("/api/vehicle")
 public class VehicleWS {
+	private Logger loggger = Logger.getLogger(VehicleWS.class.getName()) ;
 	@Autowired
 	private VehicleService vehicleService ;
 	@Autowired
@@ -30,6 +32,7 @@ public class VehicleWS {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response addVehicle(Vehicle vehicle) throws URISyntaxException {
+		loggger.info("Add vehicle "+vehicle);
 	    Vehicle newVehicle = vehicleService.create(vehicle) ;
 	    return Response.ok(newVehicle).build();
 	}
@@ -44,6 +47,16 @@ public class VehicleWS {
 	    if(existingVehicle == null) {
 	    	return Response.status(400).build();
 	    }
+	    
+	    existingVehicle.setColor(vehicle.getColor());
+	    existingVehicle.setDescription(vehicle.getDescription());
+	    existingVehicle.setDoors(vehicle.getDoors());
+	    existingVehicle.setModel(vehicle.getModel());
+	    existingVehicle.setPicture(vehicle.getPicture());
+	    existingVehicle.setRegistrationNumber(vehicle.getRegistrationNumber());
+	    existingVehicle.setSeats(vehicle.getSeats());
+	    existingVehicle.setStatus(vehicle.getStatus());
+	    existingVehicle.setYear(vehicle.getYear());
 	    Vehicle upadatedVehicle = vehicleService.create(existingVehicle) ;
 	    return Response.ok(upadatedVehicle).build();
 	}

@@ -8,6 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Logger;
+
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -28,6 +30,7 @@ import cm.deepdream.vehicleseller.model.Vehicle;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT)
 public class VehicleWebServiceTest {
+	private Logger logger = Logger.getLogger(VehicleWebServiceTest.class.getName()) ;
 	@LocalServerPort
 	private int serverPort ;
 	@Autowired
@@ -43,17 +46,23 @@ public class VehicleWebServiceTest {
 				testedBrand.getId(), testedBrand.getLabel(),  testedBrand.getDescription());
 		
 		Model testedModel = new Model(111L, "Corolla 111", testedBrand, "Corolla is the most popular Toyota model") ;
-		
+		jdbcTemplate.update("insert into model (id, label, description, id_brand) values (?, ?, ?, ?)",
+				testedModel.getId(), testedModel.getLabel(),  testedModel.getDescription(), testedModel.getBrand().getId());
+
 		Picture picture = new Picture("", "", "", "", null) ;
 		Vehicle testedVehicle = new Vehicle(111L, "CE690ID", testedModel, "GRAY", 2002, "Used", 4, 5,
 				picture, "My car is a nice car. Believe me !") ;
-		ResponseEntity<Model> response =  restTemplate.postForEntity("/api/vehicle/add", testedModel, Model.class) ;
+		ResponseEntity<Vehicle> response =  restTemplate.postForEntity("/api/vehicle/add", testedVehicle, Vehicle.class) ;
 		Vehicle returnedVehicle = null ;
 		try {
-			returnedVehicle = jdbcTemplate.queryForObject("select * from model where id=?", 
+			returnedVehicle = jdbcTemplate.queryForObject("select * from vehicle where id=?", 
 				new Object[] {testedVehicle.getId()}, new VehicleRowMapper(jdbcTemplate)) ;
 		}catch(Exception ex) {}
-		assertTrue(response.getStatusCode() == HttpStatus.OK &&  testedVehicle.equals(returnedVehicle));
+		logger.info("returnedVehicle="+returnedVehicle);
+		logger.info("testedVehicle="+testedVehicle);
+		assertTrue(response.getStatusCode() == HttpStatus.OK && returnedVehicle!= null &&
+				returnedVehicle.getId() == testedVehicle.getId() &&
+				returnedVehicle.getRegistrationNumber().equals(testedVehicle.getRegistrationNumber()));
 	}
 	
 	
@@ -74,7 +83,7 @@ public class VehicleWebServiceTest {
 				"Wolsvagen 113L is the best Wolsvagen brand for me") ;
 		
 		Picture picture = new Picture("", "", "", "", null) ;
-		Vehicle testedVehicle = new Vehicle(111L, "CE295HN", testedModel1, "BLACK", 2002, "Used", 4, 5,
+		Vehicle testedVehicle = new Vehicle(112L, "CE295HN", testedModel1, "BLACK", 2002, "Used", 4, 5,
 				null, "My car is a nice car. Believe me !") ;
 		
 		testedVehicle.setModel(testedModel2);
@@ -97,7 +106,8 @@ public class VehicleWebServiceTest {
 		Vehicle returnedVehicle = jdbcTemplate.queryForObject("select * from vehicle where id=?", 
 				new Object[] {testedVehicle.getId()}, new VehicleRowMapper(jdbcTemplate)) ;
 		
-		assertTrue(testedVehicle.equals(returnedVehicle)) ;
+		assertTrue(returnedVehicle != null && returnedVehicle.getId() == testedVehicle.getId() &&
+				returnedVehicle.getRegistrationNumber().equals(testedVehicle.getRegistrationNumber()));
 	}
 	
 	
@@ -112,7 +122,7 @@ public class VehicleWebServiceTest {
 				testedModel.getId(), testedModel.getLabel(),  testedModel.getDescription(), testedModel.getBrand().getId());
 		
 		Picture picture = new Picture("", "", "", "", null) ;
-		Vehicle testedVehicle = new Vehicle(111L, "CE275HN", testedModel, "BLACK", 2019, "New", 4, 5,
+		Vehicle testedVehicle = new Vehicle(113L, "CE275HN", testedModel, "BLACK", 2019, "New", 4, 5,
 				picture, "My car is a new. Trust it !") ;
 		
 		restTemplate.delete("/api/vehicle/id/{id}",  testedModel.getId()) ;
@@ -123,7 +133,7 @@ public class VehicleWebServiceTest {
 				new Object[] {testedVehicle.getId()}, new VehicleRowMapper(jdbcTemplate)) ;
 		}catch(Exception ex) {}
 		
-		assertNotNull(returnedVehicle);
+		assertEquals(returnedVehicle, null);
 	}
 	
 	
@@ -133,17 +143,22 @@ public class VehicleWebServiceTest {
 		jdbcTemplate.update("insert into brand (id, label, description) values (?, ?, ?)",
 				testedBrand.getId(), testedBrand.getLabel(),  testedBrand.getDescription());
 		
-		Model  testedModel = new Model(114L, "Peugeot 600 114L", testedBrand, "Peugeot 600 is a french brand") ;
+		Model  testedModel = new Model(115L, "Peugeot 600 115L", testedBrand, "Peugeot 600 is a french brand") ;
 		jdbcTemplate.update("insert into model (id, label, description, id_brand) values (?, ?, ?, ?)",
 				testedModel.getId(), testedModel.getLabel(),  testedModel.getDescription(), testedModel.getBrand().getId());
 		
 		Picture picture = new Picture("", "", "", "", null) ;
-		Vehicle testedVehicle = new Vehicle(111L, "CE275HN", testedModel, "BLACK", 2019, "New", 4, 5,
+		Vehicle testedVehicle = new Vehicle(115L, "CE275GN", testedModel, "BLUE", 2009, "New", 4, 5,
 				picture, "My car is a new. Trust it !") ;
+		
+		jdbcTemplate.update("insert into vehicle (id, registration_number, id_model, color, year, status, doors, seats, description) "
+				+ "values (?, ?, ?, ?, ?, ?, ?, ?, ?)", 
+				testedVehicle.getId(), testedVehicle.getRegistrationNumber(),  testedVehicle.getModel().getId(), testedVehicle.getColor(),
+				testedVehicle.getYear(), testedVehicle.getStatus(), testedVehicle.getDoors(), testedVehicle.getSeats(), testedVehicle.getDescription());
 
-		Vehicle returnedVehicle = restTemplate.getForObject("/api/vehicle/id/{id}",  Vehicle.class, testedModel.getId()) ;
-		assertTrue(returnedVehicle != null && 
-				returnedVehicle.equals(testedVehicle) );
+		Vehicle returnedVehicle = restTemplate.getForObject("/api/vehicle/id/{id}",  Vehicle.class, testedVehicle.getId()) ;
+		assertTrue(returnedVehicle != null && returnedVehicle.getId() == testedVehicle.getId() &&
+				returnedVehicle.getRegistrationNumber().equals(testedVehicle.getRegistrationNumber()));
 	}
 	
 	
@@ -169,7 +184,7 @@ public class VehicleWebServiceTest {
 	    public Vehicle mapRow(ResultSet rs, int rowNum) throws SQLException {
 	    	Vehicle vehicle = new Vehicle();
 	    	vehicle.setId(rs.getLong("id"));
-	    	vehicle.setRegistrationNumber(rs.getString("registrationNumber"));
+	    	vehicle.setRegistrationNumber(rs.getString("registration_number"));
 	    	vehicle.setColor(rs.getString("color")) ;
 	    	vehicle.setYear(rs.getInt("year"));
 	    	vehicle.setStatus(rs.getString("status"));
