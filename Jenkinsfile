@@ -21,7 +21,6 @@ pipeline {
 	}
 	    
 	stage('Test'){
-		
 	     steps{
 	        echo 'Test the project'    
 	     }
