@@ -1,5 +1,8 @@
 pipeline {
-  agent any
+    agent { label 'java8' }
+    environment {
+        EMAIL_RECIPIENTS = 'silvere.djam@gmail.com'
+    }
   tools {
       maven "maven"
       jdk "jdk"
@@ -9,9 +12,7 @@ pipeline {
        
        stage('Build'){
 	    steps{
-	        echo 'Build the project'   
-		sh 'make' 
-  		archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
+	       sh 'mvn -Dmaven.test.failure.ignore=true install' 
 	    }
 	}
 	    
