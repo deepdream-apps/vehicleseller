@@ -16,7 +16,7 @@ pipeline {
 	    steps{
 	        echo 'Build the project'   
 		    dir("C:/DEV/deploy/jenkins/workspace") {
-		    	 cmd 'mvn clean package'
+		    	 sh 'mvn clean package'
 			 sh 'make' 
   			 archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
 		    }
