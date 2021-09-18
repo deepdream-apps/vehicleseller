@@ -33,7 +33,7 @@ pipeline {
           
        }
        failure{
-	       
+	    echo 'Pipepline execution has failed'   
        }
    }
 }
