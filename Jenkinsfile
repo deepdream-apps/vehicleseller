@@ -9,7 +9,7 @@ pipeline {
        stage('Build'){
 	    steps{
 	       echo 'Checking out from Git Repo' 
-	       git clone 'https://github.com/deepdream-apps/vehicleseller.git'
+	       git 'https://github.com/deepdream-apps/vehicleseller.git'
 	       bat 'cd vehicleseller-bakend'
 	       bat 'mvn clean package'
 	    }
