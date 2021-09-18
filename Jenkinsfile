@@ -24,7 +24,7 @@ pipeline {
 	stage('Deploy'){
 	     steps{
 	        echo 'Deploy the project'
-		bat 'mvn -f vehicleseller-backend/pom.xml install'
+		bat 'mvn -f vehicleseller-backend/pom.xml publish'
 	     }
 	}
    }
