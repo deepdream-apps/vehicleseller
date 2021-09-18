@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'java8' }
+    agent any
     environment {
         EMAIL_RECIPIENTS = 'silvere.djam@gmail.com'
     }
@@ -29,5 +29,14 @@ pipeline {
 	        echo 'Deploy the project'
 	     }
 	}
+   }
+	
+   post{
+       always{
+          
+       }
+       failure{
+	       
+       }
    }
 }
