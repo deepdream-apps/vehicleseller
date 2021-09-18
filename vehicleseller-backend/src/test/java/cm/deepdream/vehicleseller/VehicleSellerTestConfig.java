@@ -11,6 +11,7 @@ public class VehicleSellerTestConfig {
 	@Autowired
 	private Environment env ;
 	
+	
 	 @Bean
 	  public DataSource mysqlDataSource() {
 	        DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -18,7 +19,6 @@ public class VehicleSellerTestConfig {
 	        dataSource.setUrl(env.getProperty("spring.datasource.url"));
 	        dataSource.setUsername(env.getProperty("spring.datasource.username"));
 	        dataSource.setPassword(env.getProperty("spring.datasource.password"));
-
 	        return dataSource;
 	  }
 }

@@ -2,15 +2,12 @@ package cm.deepdream.vehicleseller.service;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -18,7 +15,6 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -93,7 +89,6 @@ public class BrandWebServiceTest {
 	@Test
 	public void testGetAll() {
 		List<Brand> listBrands = restTemplate.getForObject("/api/brand/all", List.class) ;
-		
 		List<Brand> listBrands2  = jdbcTemplate.query("select * from brand", new BrandRowMapper()) ;
 		assertEquals(listBrands2.size(), listBrands.size());
 	}
