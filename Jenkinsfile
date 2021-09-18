@@ -12,7 +12,8 @@ pipeline {
        
        stage('Build'){
 	    steps{
-	       sh 'mvn -Dmaven.test.failure.ignore=true install' 
+	       echo 'Checking out from Git Repo' 
+	       git 'https://github.com/deepdream-apps/vehicleseller.git'
 	    }
 	}
 	    
