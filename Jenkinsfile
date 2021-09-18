@@ -9,8 +9,9 @@ pipeline {
        stage('Build'){
 	    steps{
 	       echo 'Checking out from Git Repo' 
-	       git 'https://github.com/deepdream-apps/vehicleseller.git'
-	       sh './mvnw -Dmaven.test.failure.ignore=true clean package'
+	       git clone 'https://github.com/deepdream-apps/vehicleseller.git'
+	       bat 'cd vehicleseller-bakend'
+	       bat 'mvn clean package'
 	    }
 	}
 	    
