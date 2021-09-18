@@ -5,9 +5,9 @@ pipeline {
     }
 	
     tools{
-    	java "jdk8"
+    	jdk "jdk8"
 	git "git"
-	mvn "mvn"    
+	maven "maven"    
     }
 
    stages{    
