@@ -16,7 +16,7 @@ pipeline {
 	    steps{
 	       echo 'Checking out from Git Repo' 
 	       git 'https://github.com/deepdream-apps/vehicleseller.git'
-	       bat 'mvn clean package'
+	       bat 'mvn -f vehicleseller-backend/pom.xml clean package'
 	    }
 	}
 	    
