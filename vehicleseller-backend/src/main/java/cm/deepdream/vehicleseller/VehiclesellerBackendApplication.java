@@ -37,6 +37,7 @@ public class VehiclesellerBackendApplication {
 
 
 	public static void main(String[] args) {
+		
 		SpringApplication.run(VehiclesellerBackendApplication.class, args);
 	}
 	

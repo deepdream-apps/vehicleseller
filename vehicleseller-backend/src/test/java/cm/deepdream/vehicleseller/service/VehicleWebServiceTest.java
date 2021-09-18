@@ -36,7 +36,7 @@ public class VehicleWebServiceTest {
 	private JdbcTemplate jdbcTemplate ;
 	
 	
-	/*@Test
+	@Test
 	public void testAdd() {
 		Brand  testedBrand = new Brand(111L, null, "Toyota 111", "Toyota is the best in Africa") ;
 		jdbcTemplate.update("insert into brand (id, label, description) values (?, ?, ?)", 
@@ -181,6 +181,6 @@ public class VehicleWebServiceTest {
 	    	return vehicle ;
 	    }
 	}
-	*/
+	
 
 }
