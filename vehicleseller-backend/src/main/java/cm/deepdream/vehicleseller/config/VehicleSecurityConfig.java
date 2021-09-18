@@ -2,16 +2,13 @@ package cm.deepdream.vehicleseller.config;
 
 //import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
-@Configuration
-@EnableWebSecurity
+//@Configuration
+//@EnableWebSecurity
 //@EnableOAuth2Sso
-public class VehicleSecurityConfig extends WebSecurityConfigurerAdapter{
+public class VehicleSecurityConfig {}
+
+/*public class VehicleSecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	
 	@Override
@@ -33,3 +30,4 @@ public class VehicleSecurityConfig extends WebSecurityConfigurerAdapter{
 	}
 
 }
+*/
