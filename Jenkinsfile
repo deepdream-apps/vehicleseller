@@ -6,12 +6,7 @@ pipeline {
       git "git"
    }
    stages{    
-       stage('Initialize'){
-            steps{
-                echo "PATH = ${M2_HOME}"
-            }
-       }
-	   
+       
        stage('Build'){
 	    steps{
 	        echo 'Build the project'   
