@@ -29,12 +29,5 @@ pipeline {
 	}
    }
 	
-   post{
-       always{
-          
-       }
-       failure{
-	    echo 'Pipepline execution has failed'   
-       }
-   }
+   
 }
