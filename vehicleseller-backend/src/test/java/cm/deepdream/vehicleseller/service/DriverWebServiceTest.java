@@ -117,7 +117,7 @@ public class DriverWebServiceTest {
 		
 		Driver returnedBrand = null ;
 		try {
-			returnedBrand = jdbcTemplate.queryForObject("/api/brand/id/{id}", Driver.class, testedDriver.getId()) ;
+			returnedBrand = jdbcTemplate.queryForObject("/api/driver/id/{id}", Driver.class, testedDriver.getId()) ;
 		}catch(Exception ex) {} ;
 		assertNull(returnedBrand);
 	}
