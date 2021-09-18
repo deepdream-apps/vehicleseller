@@ -1,25 +1,27 @@
 pipeline {
-  agent any
-  tools {
-      maven "maven"
-      jdk "jdk8"
-   }
+    agent any
+    environment {
+        EMAIL_RECIPIENTS = 'silvere.djam@gmail.com'
+    }
+	
+    tools{
+    	jdk "jdk8"
+	git "git"
+	maven "maven"    
+    }
+
    stages{    
-       stage('Initialize'){
-            steps{
-                echo "PATH = ${M2_HOME}"
-            }
-       }
-	   
+       
        stage('Build'){
 	    steps{
-	        echo 'Build the project'   
-		dir("C:/DEV/deploy/jenkins/workspace") {
-                sh 'mvn clean package'
+	       echo 'Checking out from Git Repo' 
+	       git 'https://github.com/deepdream-apps/vehicleseller.git'
+	       bat 'mvn -f vehicleseller-backend/pom.xml clean package'
 	    }
 	}
 	    
 	stage('Test'){
+		
 	     steps{
 	        echo 'Test the project'    
 	     }
@@ -31,4 +33,6 @@ pipeline {
 	     }
 	}
    }
+	
+   
 }
