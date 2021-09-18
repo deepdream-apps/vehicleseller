@@ -3,6 +3,12 @@ pipeline {
     environment {
         EMAIL_RECIPIENTS = 'silvere.djam@gmail.com'
     }
+	
+    tools{
+    	java "jdk8"
+	git "git"
+	mvn "mvn"    
+    }
 
    stages{    
        
