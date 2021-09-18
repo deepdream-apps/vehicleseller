@@ -3,11 +3,7 @@ pipeline {
     environment {
         EMAIL_RECIPIENTS = 'silvere.djam@gmail.com'
     }
-  tools {
-      maven "maven"
-      jdk "jdk"
-      git "git"
-   }
+
    stages{    
        
        stage('Build'){
@@ -19,6 +15,7 @@ pipeline {
 	}
 	    
 	stage('Test'){
+		
 	     steps{
 	        echo 'Test the project'    
 	     }
