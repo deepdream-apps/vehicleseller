@@ -29,7 +29,7 @@ public class CountryWS {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response addCountry(Country country) throws URISyntaxException {
 	    if(country.getLabel() == null || country.getLabel().equals("")) {
-	            return Response.status(400).entity("Please provide all mandatory inputs").build();
+	          return Response.status(400).entity("Please provide all mandatory inputs").build();
 	     }
 	    Country newCountry = countryService.create(country) ;
 	    return Response.ok(newCountry).build();
