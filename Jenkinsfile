@@ -14,6 +14,7 @@ pipeline {
 	    steps{
 	       echo 'Checking out from Git Repo' 
 	       git 'https://github.com/deepdream-apps/vehicleseller.git'
+	       sh './mvnw -Dmaven.test.failure.ignore=true clean package'
 	    }
 	}
 	    
