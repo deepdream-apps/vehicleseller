@@ -23,7 +23,7 @@ pipeline {
 	   
 	stage('Test'){
 	    steps{
-	       bat 'java -jar --spring.profiles.active=test vehicleseller-backend/target/vehicleseller-backend-0.0.1-SNAPSHOT.jar'
+	       bat 'java -jar --spring.profiles.active=test vehicleseller-backend/target/vehicleseller-backend.jar'
 	       echo 'Test stage executed successfully'
 	    }
 	}
