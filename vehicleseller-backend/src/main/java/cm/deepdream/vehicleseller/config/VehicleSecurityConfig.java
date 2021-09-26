@@ -1,14 +1,12 @@
 package cm.deepdream.vehicleseller.config;
+import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
-//import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
-
-
-//@Configuration
-//@EnableWebSecurity
-//@EnableOAuth2Sso
-public class VehicleSecurityConfig {}
-
-/*public class VehicleSecurityConfig extends WebSecurityConfigurerAdapter{
+@Configuration
+@EnableOAuth2Sso
+public class VehicleSecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	
 	@Override
@@ -21,13 +19,5 @@ public class VehicleSecurityConfig {}
           .anyRequest()
           .authenticated() ;
     }
-	
-	
-	@Override
-	public void configure(AuthenticationManagerBuilder authenticationMgr) throws Exception {
-	     authenticationMgr.inMemoryAuthentication().withUser("admin").password("admin")
-	          .authorities("ROLE_ADMIN");
-	}
 
 }
-*/

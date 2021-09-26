@@ -1,5 +1,6 @@
 package cm.deepdream.vehicleseller.service;
 import org.junit.Test;
+
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,7 +19,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.test.context.junit4.SpringRunner;
-import cm.deepdream.vehicleseller.config.VehicleSellerTestConfig;
+
+import cm.deepdream.vehicleseller.VehicleSellerTestConfig;
 import cm.deepdream.vehicleseller.model.Brand;
 import cm.deepdream.vehicleseller.model.Model;
 
