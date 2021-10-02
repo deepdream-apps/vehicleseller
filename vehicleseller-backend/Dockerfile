@@ -1,5 +1,4 @@
-FROM openjdk:8-jdk-alpine
-MAINTAINER Silvere DJAM <silvere.djam@gmail.com>
-ADD target/vehicleseller-backend.jar vehicleseller-backend.jar
+FROM openjdk:11
+ADD target/vehicleseller-backend-0.0.1-SNAPSHOT.jar app.jar
 EXPOSE 9090
-ENTRYPOINT ["java","-jar","vehicleseller-backend.jar"]
+CMD ['java' '-jar', 'app.jar']

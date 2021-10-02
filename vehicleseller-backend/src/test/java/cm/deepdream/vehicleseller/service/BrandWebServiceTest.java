@@ -16,8 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.client.RestTemplate;
 import cm.deepdream.vehicleseller.VehicleSellerTestConfig;
 import cm.deepdream.vehicleseller.model.Brand;
 
@@ -28,17 +28,16 @@ public class BrandWebServiceTest {
 	@LocalServerPort
 	private int serverPort ;
 	@Autowired
-	private OAuth2RestTemplate restTemplate ;
+	private RestTemplate restTemplate ;
 	@Autowired
 	private JdbcTemplate jdbcTemplate ;
-	private final String SERVICE_ADDRESS = "http://localhost:"+serverPort ;
 	
 	
 	
 	@Test
 	public void testAdd() {
 		Brand  testedBrand = new Brand(1L, null, "Toyota", "Toyota is the best in Africa") ;
-		ResponseEntity<Brand> response =   restTemplate.postForEntity(SERVICE_ADDRESS+"/api/brand/add", testedBrand, Brand.class) ;
+		ResponseEntity<Brand> response =   restTemplate.postForEntity("/api/brand/add", testedBrand, Brand.class) ;
 		Brand returnedBrand = jdbcTemplate.queryForObject("select * from brand where id=?", 
 				new Object[] {1L}, new BrandRowMapper()) ;
 		assertTrue(response.getStatusCode() == HttpStatus.OK  && returnedBrand.equals(testedBrand));
@@ -52,7 +51,7 @@ public class BrandWebServiceTest {
 		Brand testedBrand = new Brand(2L, null, "Mercedes", "Mercedes is the second in Africa") ;
 		testedBrand.setLabel("KIA");
 		testedBrand.setDescription("KIA is the second in Africa");
-		restTemplate.put(SERVICE_ADDRESS+"/api/brand/update/{id}", testedBrand, 2L) ;
+		restTemplate.put("/api/brand/update/{id}", testedBrand, 2L) ;
 		
 		Brand returnedBrand = jdbcTemplate.queryForObject("select * from brand where id=?", 
 				new Object[] {2L}, new BrandRowMapper()) ;
@@ -67,7 +66,7 @@ public class BrandWebServiceTest {
 		jdbcTemplate.update("insert into brand (id, label, description) values (?, ?, ?)",
 				3L, "Peugeot",  "Peugeot is a french brand");
 
-		Brand returnedBrand = restTemplate.getForObject(SERVICE_ADDRESS+"/api/brand/id/{id}",  Brand.class, 3L) ;
+		Brand returnedBrand = restTemplate.getForObject("/api/brand/id/{id}",  Brand.class, 3L) ;
 		assertTrue(returnedBrand != null && returnedBrand.equals(testedBrand));
 	}
 	
@@ -78,11 +77,11 @@ public class BrandWebServiceTest {
 		jdbcTemplate.update("insert into brand (id, label, description) values (?, ?, ?)",
 				testedBrand.getId(), testedBrand.getLabel(),  testedBrand.getDescription());
 
-		restTemplate.delete(SERVICE_ADDRESS + "/api/brand/id/{id}", testedBrand.getId()) ;
+		restTemplate.delete("/api/brand/id/{id}", testedBrand.getId()) ;
 		
 		Brand returnedBrand = null ;
 		try {
-			returnedBrand = jdbcTemplate.queryForObject(SERVICE_ADDRESS + "/api/brand/id/{id}", Brand.class, testedBrand.getId()) ;
+			returnedBrand = jdbcTemplate.queryForObject("/api/brand/id/{id}", Brand.class, testedBrand.getId()) ;
 		}catch(Exception ex) {} ;
 		assertNull(returnedBrand);
 	}
@@ -90,7 +89,7 @@ public class BrandWebServiceTest {
 	
 	@Test
 	public void testGetAll() {
-		List<Brand> listBrands = restTemplate.getForObject(SERVICE_ADDRESS + "/api/brand/all", List.class) ;
+		List<Brand> listBrands = restTemplate.getForObject("/api/brand/all", List.class) ;
 		List<Brand> listBrands2  = jdbcTemplate.query("select * from brand", new BrandRowMapper()) ;
 		assertEquals(listBrands2.size(), listBrands.size());
 	}

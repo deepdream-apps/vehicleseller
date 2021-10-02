@@ -8,19 +8,20 @@
 		<version>2.3.3.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>cm.deepdream</groupId>
-	<artifactId>vehicleseller-auth</artifactId>
+	<groupId>cm.deepdream.vehicleseller</groupId>
+	<artifactId>vehicleseller-auth-data</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>vehicleseller-auth</name>
+	<name>vehicleseller-auth-data</name>
 	<description>Vehicleseller Authproject for Spring Boot</description>
 	<properties>
-		<java.version>1.8</java.version>
+		<java.version>11</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
-   			<groupId>org.springframework.boot</groupId>
-   			<artifactId>spring-boot-starter-security</artifactId>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -33,6 +34,7 @@
 			<optional>true</optional>
 		</dependency>
 	</dependencies>
+
 	<build>
 		<plugins>
 			<plugin>

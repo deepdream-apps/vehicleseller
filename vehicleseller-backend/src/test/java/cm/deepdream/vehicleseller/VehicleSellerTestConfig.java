@@ -1,16 +1,10 @@
 package cm.deepdream.vehicleseller;
-import java.util.Arrays;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
-import org.springframework.security.oauth2.client.OAuth2RestTemplate;
-import org.springframework.security.oauth2.client.token.grant.client.ClientCredentialsResourceDetails;
-import org.springframework.security.oauth2.common.AuthenticationScheme;
 
 @TestConfiguration
 public class VehicleSellerTestConfig {
@@ -41,7 +35,7 @@ public class VehicleSellerTestConfig {
 		 resource.setAuthenticationScheme(AuthenticationScheme.form);
 		 OAuth2RestTemplate restTemplate = new OAuth2RestTemplate (resource) ;
 	     return restTemplate ;
-	 }*/
+	 }
 	 
 	 @Bean
 	 public OAuth2RestTemplate oAuth2RestTemplate2() {
@@ -60,5 +54,5 @@ public class VehicleSellerTestConfig {
 	     OAuth2RestTemplate restTemplate = new OAuth2RestTemplate(resourceDetails, clientContext);
 	     restTemplate.setMessageConverters(Arrays.asList(new MappingJackson2HttpMessageConverter()));
 	     return restTemplate ;
-	 }
+	 }*/
 }
