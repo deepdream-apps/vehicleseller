@@ -37,8 +37,8 @@ public class ModelService {
 	}
 	
 	
-	public List<Model> getModels (Brand brand) {
-		List<Model> modelsList =  modelRepository.findByBrand(brand) ;
+	public List<Model> getModels (String labelBrand) {
+		List<Model> modelsList =  modelRepository.findByLabelBrand(labelBrand) ;
 		return modelsList ;
 	}
 	

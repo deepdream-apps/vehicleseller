@@ -2,6 +2,7 @@ package cm.deepdream.vehicleseller.model;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import org.springframework.format.annotation.DateTimeFormat;
 import lombok.AllArgsConstructor;
@@ -14,6 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class User {
 	@Id
+	@GeneratedValue
 	@Column(name = "id")
 	private Long id ;
 	
@@ -26,7 +28,7 @@ public class User {
 	@Column(name = "last_name")
 	private String lastName ;
 	
-	/**Subscriber, Seller, Administrator**/
+	/**Client, Opérateur, Administrateur, Gérant**/
 	@Column(name = "role_name")
 	private String roleName ;
 	

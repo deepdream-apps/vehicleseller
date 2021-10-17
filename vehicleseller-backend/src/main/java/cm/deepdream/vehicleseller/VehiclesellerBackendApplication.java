@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import com.amazonaws.auth.AWSCredentials;
@@ -54,16 +55,15 @@ public class VehiclesellerBackendApplication {
 	
 	@Bean
 	public WebMvcConfigurer corsConfigurer() {
+		
 		return new WebMvcConfigurer() {
+			
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**")
-				        .allowedOrigins("*")
-				        .allowedOrigins("http://localhost:3002")
-				        .allowedMethods("GET", "POST", "PUT", "DELETE")
-				        .allowCredentials(false)
-				        .maxAge(3600);
+				        .allowedOrigins("http://localhost:3000");
 			}
+			
 		};
 	}
 	
@@ -71,6 +71,12 @@ public class VehiclesellerBackendApplication {
     public Principal user(Principal p){
         return p;
     }
+	
+	@Bean
+	public RestTemplate restTemplate() {
+		RestTemplate restTemplate = new RestTemplate() ;
+		return restTemplate ;
+	}
 	
 	//https://howtodoinjava.com/spring-boot2/spring-cors-configuration/
 

@@ -2,6 +2,7 @@ package cm.deepdream.vehicleseller.model;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -15,6 +16,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Vehicle {
 	@Id
+	@GeneratedValue
 	@Column(name = "id")
 	private Long id ;
 	
@@ -25,11 +27,17 @@ public class Vehicle {
 	@JoinColumn (name = "id_model")
 	private Model model ;
 	
+	@Column(name = "category")
+	private String category ;
+	
 	@Column(name = "color")
 	private String color ;
 	
 	@Column(name = "year")
 	private Integer year ;
+	
+	@Column(name = "mileage")
+	private Integer mileage ;
 	
 	@Column(name = "status")
 	private String status ;
@@ -39,11 +47,10 @@ public class Vehicle {
 	
 	@Column(name = "seats")
 	private Integer seats ;
-	
-	@Embedded
-	private Picture picture ;
 
 	@Column(name = "description")
 	private String description ;
-
+	
+	@Column(name = "image_name")
+	private String imageName ;
 }

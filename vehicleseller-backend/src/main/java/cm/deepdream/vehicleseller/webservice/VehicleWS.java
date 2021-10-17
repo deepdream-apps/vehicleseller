@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.logging.Logger;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -18,7 +19,9 @@ import cm.deepdream.vehicleseller.model.Brand;
 import cm.deepdream.vehicleseller.model.Model;
 import cm.deepdream.vehicleseller.model.Vehicle;
 import cm.deepdream.vehicleseller.service.VehicleService;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Path("/api/vehicle")
 public class VehicleWS {
 	private Logger loggger = Logger.getLogger(VehicleWS.class.getName()) ;
@@ -38,6 +41,36 @@ public class VehicleWS {
 	}
 	
 	
+	@POST
+	@Path("/add-data")
+	@Consumes("application/x-www-form-urlencoded;charset=UTF-8")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response addVehicleWithImage(@FormParam("registrationNumber") String registrationNumber,
+			@FormParam("modelId") Long modelId,
+			@FormParam("category") String category,
+			@FormParam("color") String color,
+			@FormParam("year") Integer year,
+			@FormParam("mileage") Integer mileage,
+			@FormParam("status") String status,
+			@FormParam("doors") Integer doors,
+			@FormParam("seats") Integer seats,
+			@FormParam("description") String description) throws URISyntaxException {
+		try {
+			Model model = new Model(modelId, null, null) ;
+			
+			Vehicle vehicle = new Vehicle(null, registrationNumber, model, 
+					category, color, year, mileage, status, doors, seats, description, "") ;
+			
+			loggger.info("Add vehicle " + vehicle) ;
+		    Vehicle newVehicle = vehicleService.create(vehicle) ;
+		    return Response.ok(newVehicle).build();
+		}catch(Exception ex) {
+			return Response.serverError().build() ;
+		}
+	}
+	
+	
+	
 	@PUT
 	@Path("/update/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -52,7 +85,6 @@ public class VehicleWS {
 	    existingVehicle.setDescription(vehicle.getDescription());
 	    existingVehicle.setDoors(vehicle.getDoors());
 	    existingVehicle.setModel(vehicle.getModel());
-	    existingVehicle.setPicture(vehicle.getPicture());
 	    existingVehicle.setRegistrationNumber(vehicle.getRegistrationNumber());
 	    existingVehicle.setSeats(vehicle.getSeats());
 	    existingVehicle.setStatus(vehicle.getStatus());

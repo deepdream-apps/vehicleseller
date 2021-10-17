@@ -1,7 +1,11 @@
 package cm.deepdream.vehicleseller.model;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -16,6 +20,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Reservation {
 	@Id
+	@GeneratedValue
 	@Column(name = "id")
 	private Long id ;
 
@@ -27,15 +32,34 @@ public class Reservation {
 	@JoinColumn (name = "id_insurance")
 	private Customer customer ;
 	
+	@Column(name = "date")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDateTime date ;
+	
 	@Column(name = "start_date")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private LocalDateTime startDate ;
+	private LocalDate startDate ;
 	
-	@Column(name = "end_date")
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private LocalDateTime endDate ;
+	@Column(name = "duration")
+	@DateTimeFormat(pattern = "HH:mm:ss")
+	private LocalTime duration ;
 	
-	/*Cancelled, Done, Confirmed*/
+	@Column(name = "category")
+	private String category ;
+	
+	@Column(name = "prestation")
+	private String prestation ;
+	
+	@Column(name = "departure_city")
+	private String departureCity ;
+	
+	@Column(name = "arrival_city")
+	private String arrivalCity ;
+	
+	/**
+	 * Valeurs possibles du statut d'un véhicule :
+	 * Annulé, En attente, Confirmé, Terminé
+	 * */
 	@Column(name = "status")
 	private String status ;
 	

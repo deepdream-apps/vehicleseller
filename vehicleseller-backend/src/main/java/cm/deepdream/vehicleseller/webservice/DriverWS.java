@@ -2,6 +2,7 @@ package cm.deepdream.vehicleseller.webservice;
 import java.net.URISyntaxException;
 import java.util.List;
 import javax.inject.Singleton;
+import javax.validation.ConstraintViolationException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -27,8 +28,12 @@ public class DriverWS {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response addDriver(Driver driver) throws URISyntaxException {
-	    Driver newDriver = driverService.create(driver) ;
-	    return Response.ok(newDriver).build();
+		try {
+			Driver newDriver = driverService.create(driver) ;
+			return Response.ok(newDriver).build();
+		}catch(ConstraintViolationException ex) {
+			return Response.serverError().build() ;
+		}
 	}
 	
 	

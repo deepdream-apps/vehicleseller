@@ -49,8 +49,6 @@ public class ModelWS {
 	    	return Response.status(400).build();
 	    }
 	    existingModel.setLabel(model.getLabel());
-	    existingModel.setDescription(model.getDescription());
-	    existingModel.setBrand(model.getBrand());
 	    Model upadatedModel = modelService.create(existingModel) ;
 	    return Response.ok(upadatedModel).build();
 	}
@@ -80,16 +78,6 @@ public class ModelWS {
 	    	return Response.noContent().build();
 	    }
 	    return Response.ok(existingModel).build();
-	}
-	
-	@GET
-	@Path("/brand/{brandId}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getModels(@PathParam("brandId") Long brandId) throws URISyntaxException {
-		Brand brand = new Brand() ;
-		brand.setId(brandId);
-	    List<Model> listModels = modelService.getModels(brand) ;
-	    return Response.ok(listModels).build();
 	}
 	
 	
