@@ -1,91 +1,103 @@
 package cm.deepdream.vehicleseller.webservice;
-import java.net.URISyntaxException;
 import java.util.List;
-import javax.inject.Singleton;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Response;
+import java.util.Optional;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import cm.deepdream.vehicleseller.dto.UserPassword;
 import cm.deepdream.vehicleseller.model.User;
 import cm.deepdream.vehicleseller.service.UserService;
-
-@Path("/api/user")
-@Singleton
+@RestController
+@RequestMapping("/api/user")
 public class UserWS {
+	private Logger logger = Logger.getLogger(UserWS.class.getName()) ;
 	@Autowired
 	private UserService userService ;
+
 	
-	
-	@POST
-	@Path("/add/{id}")
-	@Consumes("application/json")
-	@Produces("application/json")
-	public Response addUser(User user) throws URISyntaxException {
-	    if(user.getEmailAddress() == null || user.getEmailAddress().equals("")) {
-	            return Response.status(400).entity("Please provide all mandatory inputs").build();
-	     }
+	@PostMapping("/add")
+	public ResponseEntity<User> addUser(@RequestBody User user)  {
+	    if(user.getEmailAddress() == null || user.getEmailAddress().isBlank()) {
+	         return ResponseEntity.badRequest().build();
+	    }
 	    User newUser = userService.create(user) ;
-	    return Response.ok(newUser).build();
+	    return ResponseEntity.ok(newUser) ;
 	}
 	
 	
-	@PUT
-	@Path("/update/{id}")
-	@Consumes("application/json")
-	@Produces("application/json")
-	public Response updateUser(@PathParam("id") Long id, User user) throws URISyntaxException {
-	    if(user.getEmailAddress() == null || user.getEmailAddress().equals("")) {
-	         return Response.status(400).build();
+	@PutMapping("/update")
+	public ResponseEntity<User> updateUser(@RequestBody User user)  {
+	    Optional<User> optUser = userService.get(user.getId()) ;
+	    if(optUser.isEmpty() || user.getEmailAddress() == null || user.getEmailAddress().isBlank()) {
+	         return ResponseEntity.badRequest().build();
 	     }
-	    User existingUser = userService.get(id) ;
-	    if(existingUser == null) {
-	    	return Response.status(400).build();
-	    }
+	    
+	    User existingUser = optUser.get() ;
 	    existingUser.setFirstName(user.getFirstName());
 	    existingUser.setLastName(user.getLastName());
 	    User upadatedUser = userService.create(existingUser) ;
-	    return Response.ok(upadatedUser).build();
+	    return ResponseEntity.ok(upadatedUser) ;
 	}
 	
 	
-	
-	@DELETE
-	@Path("/{id}")
-	@Consumes("application/json")
-	public Response deleteUser(@PathParam("id") Long id) throws URISyntaxException {
-	    User existingUser = userService.get(id) ;
-	    if(existingUser == null) {
-	    	return Response.status(400).build();
+	@PutMapping("/define-password")
+	public ResponseEntity<User> defineUserPassword(@RequestBody  UserPassword userPassword)  {
+	    Optional<User> optUser = userService.get(userPassword.getUserId()) ;
+	    if(optUser.isEmpty()) {
+	    	return ResponseEntity.badRequest().build();
 	    }
-	    userService.delete(existingUser) ;
-	    return Response.ok(1).build();
+	    User existingUser = optUser.get() ;
+	    existingUser.setPassword(userPassword.getPassword()) ;
+	    User upadatedUser = userService.modify(existingUser) ;
+	    return ResponseEntity.ok(upadatedUser);
 	}
 	
 	
-	
-	@GET
-	@Path("/id/{id}")
-	@Produces("application/json")
-	public Response getUser(@PathParam("id") Long id) throws URISyntaxException {
-	    User existingUser = userService.get(id) ;
-	    if(existingUser == null) {
-	    	return Response.noContent().build();
+	@PutMapping("/authenticate")
+	public ResponseEntity<User> authenticate(UserPassword userPassword) {
+	    Optional<User> optUser = userService.authenticate(userPassword.getEmailAddress(), userPassword.getPassword()) ;
+	    if(optUser.isEmpty()) {
+	    	return ResponseEntity.badRequest().build();
 	    }
-	    return Response.ok(existingUser).build();
+	    return ResponseEntity.ok(optUser.get()) ;
 	}
 	
 	
-	@GET
-	@Path("/all")
-	@Produces("application/json")
-	public Response getAllUsers() throws URISyntaxException {
+	@DeleteMapping("/id/{id}")
+	public ResponseEntity deleteUser(@PathVariable("id") Long id) {
+	    Optional<User> optUser = userService.get(id) ;
+	    if(optUser.isEmpty()) {
+	    	return ResponseEntity.badRequest().build();
+	    }
+	    userService.delete(optUser.get()) ;
+	    return ResponseEntity.ok().build();
+	}
+	
+	
+	
+	@GetMapping("/id/{id}")
+	public ResponseEntity<User> getUser(@PathVariable("id") Long id) {
+	    Optional<User> optUser = userService.get(id) ;
+	    if(optUser.isEmpty()) {
+	    	return ResponseEntity.noContent().build();
+	    }
+	    return ResponseEntity.ok(optUser.get());
+	}
+	
+	
+
+	@GetMapping("/all")
+	public ResponseEntity<List<User>> getAllUsers() {
 	    List<User> listCountries = userService.getAll() ;
-	    return Response.ok(listCountries).build();
+	    return ResponseEntity.ok(listCountries) ;
 	}
 }

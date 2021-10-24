@@ -1,83 +1,76 @@
 package cm.deepdream.vehicleseller.webservice;
-import java.net.URISyntaxException;
 import java.util.List;
-import javax.inject.Singleton;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import cm.deepdream.vehicleseller.model.Customer;
 import cm.deepdream.vehicleseller.service.CustomerService;
-@Path("/api/customer")
-@Singleton
+
+@RestController
+@RequestMapping("/api/customer")
 public class CustomerWS {
 	@Autowired
 	private CustomerService customerService ;
 	
 	
-	@POST
-	@Path("/add")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response addCustomer(Customer customer) throws URISyntaxException {
+	@PostMapping("/add")
+	public ResponseEntity<Customer> addCustomer(@RequestBody  Customer customer)  {
 	    Customer newCustomer = customerService.create(customer) ;
-	    return Response.ok(newCustomer).build();
+	    return ResponseEntity.ok(newCustomer) ;
 	}
 	
 	
-	@PUT
-	@Path("/update/{id}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateCustomer(@PathParam("id") Long id, Customer customer) throws URISyntaxException {
-	    Customer existingCustomer = customerService.get(id) ;
-	    if(existingCustomer == null) {
-	    	return Response.status(400).build();
+	@PutMapping("/update")
+	public ResponseEntity<Customer> updateCustomer(@RequestBody Customer customer)  {
+	    Optional<Customer> optCustomer = customerService.get(customer.getId()) ;
+	    if(optCustomer.isEmpty()) {
+	    	return ResponseEntity.badRequest().build();
 	    }
-	    Customer upadatedCustomer = customerService.create(existingCustomer) ;
-	    return Response.ok(upadatedCustomer).build();
+	    Customer existingCustomer = optCustomer.get() ;
+	    Customer upadatedCustomer = customerService.modify(existingCustomer) ;
+	    return ResponseEntity.ok(upadatedCustomer);
 	}
 	
 	
-	
-	@DELETE
-	@Path("/{id}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response deleteCustomer(@PathParam("id") Long id) throws URISyntaxException {
-	    Customer existingCustomer = customerService.get(id) ;
-	    if(existingCustomer == null) {
-	    	return Response.status(400).build();
+	@DeleteMapping("/id/{id}")
+	public ResponseEntity deleteCustomer(@PathVariable("id") Long id)  {
+	    Optional<Customer> optCustomer = customerService.get(id) ;
+	    if(optCustomer.isEmpty()) {
+	    	return ResponseEntity.noContent().build();
 	    }
-	    customerService.delete(existingCustomer) ;
-	    return Response.ok(1).build();
+	    customerService.delete(optCustomer.get()) ;
+	    return ResponseEntity.ok().build();
 	}
 	
 	
-	
-	@GET
-	@Path("/id/{id}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getCustomer(@PathParam("id") Long id) throws URISyntaxException {
-	    Customer existingCustomer = customerService.get(id) ;
-	    if(existingCustomer == null) {
-	    	return Response.noContent().build();
+	@GetMapping("/id/{id}")
+	public ResponseEntity<Customer> getCustomer(@PathVariable("id") Long id)  {
+	    Optional<Customer> optCustomer = customerService.get(id) ;
+	    if(optCustomer.isEmpty()) {
+	    	return ResponseEntity.noContent().build();
 	    }
-	    return Response.ok(existingCustomer).build();
+	    return ResponseEntity.ok(optCustomer.get()) ;
 	}
 	
 	
-	@GET
-	@Path("/all")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAllCustomers() throws URISyntaxException {
+	@GetMapping("/all")
+	public ResponseEntity<List<Customer>> getAllCustomers()  {
 	    List<Customer> listCountries = customerService.getAll() ;
-	    return Response.ok(listCountries).build();
+	    return ResponseEntity.ok(listCountries);
+	}
+	
+	
+	@GetMapping("/exists/email-address/{emailAddress}")
+	public ResponseEntity<Boolean> checkIfEmailAddressExists(@PathVariable("emailAddress") String emailAddress)  {
+		Boolean emailAddressExists = customerService.checksIfEmailAddressExists(emailAddress) ;
+	    return ResponseEntity.ok(emailAddressExists);
 	}
 }

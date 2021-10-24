@@ -15,14 +15,12 @@ public class TechnicalVisitService {
 	private TechnicalVisitRepository technicalVisitRepository ;
 	
 	public TechnicalVisit create (TechnicalVisit technicalVisit) {
-		TechnicalVisit savedTechnicalVisit  = technicalVisitRepository.save(technicalVisit) ;
-		return savedTechnicalVisit ;
+		return technicalVisitRepository.save(technicalVisit) ;
 	}
 	
 	
 	public TechnicalVisit modify (TechnicalVisit technicalVisit) {
-		TechnicalVisit savedTechnicalVisit  = technicalVisitRepository.save(technicalVisit) ;
-		return savedTechnicalVisit ;
+		return technicalVisitRepository.save(technicalVisit) ;
 	}
 	
 	
@@ -32,14 +30,13 @@ public class TechnicalVisitService {
 	
 	
 	public TechnicalVisit get (Long id) {
-		TechnicalVisit savedTechnicalVisit  = technicalVisitRepository.findById(id).orElseGet(null) ;
-		return savedTechnicalVisit ;
+		return technicalVisitRepository.findById(id).orElseThrow(NullPointerException::new)  ;
 	}
 	
 	
 	public List<TechnicalVisit> getAll () {
 		Iterable<TechnicalVisit> technicalVisits  = technicalVisitRepository.findAll() ;
-		List<TechnicalVisit> technicalVisitsList = new ArrayList<TechnicalVisit>() ;
+		List<TechnicalVisit> technicalVisitsList = new ArrayList<>() ;
 		technicalVisits.forEach(technicalVisitsList::add) ;
 		return technicalVisitsList ;
 	}

@@ -15,14 +15,12 @@ public class PaymentService {
 	private PaymentRepository paymentRepository ;
 	
 	public Payment create (Payment payment) {
-		Payment savedPayment  = paymentRepository.save(payment) ;
-		return savedPayment ;
+		return paymentRepository.save(payment) ;
 	}
 	
 	
 	public Payment modify (Payment payment) {
-		Payment savedPayment  = paymentRepository.save(payment) ;
-		return savedPayment ;
+		return paymentRepository.save(payment) ;
 	}
 	
 	
@@ -32,14 +30,13 @@ public class PaymentService {
 	
 	
 	public Payment get (Long id) {
-		Payment savedPayment  = paymentRepository.findById(id).orElseGet(null) ;
-		return savedPayment ;
+		return paymentRepository.findById(id).orElseThrow(NullPointerException::new)  ;
 	}
 	
 	
 	public List<Payment> getAll () {
 		Iterable<Payment> payments  = paymentRepository.findAll() ;
-		List<Payment> paymentsList = new ArrayList<Payment>() ;
+		List<Payment> paymentsList = new ArrayList<>() ;
 		payments.forEach(paymentsList::add) ;
 		return paymentsList ;
 	}

@@ -15,14 +15,12 @@ public class TownService {
 	private TownRepository townRepository ;
 	
 	public Town create (Town town) {
-		Town savedTown  = townRepository.save(town) ;
-		return savedTown ;
+		return townRepository.save(town) ;
 	}
 	
 	
 	public Town modify (Town town) {
-		Town savedTown  = townRepository.save(town) ;
-		return savedTown ;
+		return townRepository.save(town) ;
 	}
 	
 	
@@ -32,14 +30,13 @@ public class TownService {
 	
 	
 	public Town get (Long id) {
-		Town savedTown  = townRepository.findById(id).orElseGet(null) ;
-		return savedTown ;
+		return townRepository.findById(id).orElseThrow(NullPointerException::new)  ;
 	}
 	
 	
 	public List<Town> getAll () {
 		Iterable<Town> towns  = townRepository.findAll() ;
-		List<Town> townsList = new ArrayList<Town>() ;
+		List<Town> townsList = new ArrayList<>() ;
 		towns.forEach(townsList::add) ;
 		return townsList ;
 	}

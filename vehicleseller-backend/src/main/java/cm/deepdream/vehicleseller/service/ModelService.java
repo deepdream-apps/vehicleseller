@@ -1,10 +1,10 @@
 package cm.deepdream.vehicleseller.service;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import cm.deepdream.vehicleseller.model.Brand;
 import cm.deepdream.vehicleseller.model.Model;
 import cm.deepdream.vehicleseller.repository.ModelRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -15,14 +15,12 @@ public class ModelService {
 	private ModelRepository modelRepository ;
 	
 	public Model create (Model model) {
-		Model savedModel  = modelRepository.save(model) ;
-		return savedModel ;
+		return modelRepository.save(model) ;
 	}
 	
 	
 	public Model modify (Model model) {
-		Model savedModel  = modelRepository.save(model) ;
-		return savedModel ;
+		return modelRepository.save(model) ;
 	}
 	
 	
@@ -31,21 +29,19 @@ public class ModelService {
 	}
 	
 	
-	public Model get (Long id) {
-		Model savedModel  = modelRepository.findById(id).orElseGet(null) ;
-		return savedModel ;
+	public Optional<Model> get (Long id) {
+		return modelRepository.findById(id)  ;
 	}
 	
 	
 	public List<Model> getModels (String labelBrand) {
-		List<Model> modelsList =  modelRepository.findByLabelBrand(labelBrand) ;
-		return modelsList ;
+		return  modelRepository.findByLabelBrand(labelBrand) ;
 	}
 	
 	
 	public List<Model> getAll () {
 		Iterable<Model> countries  = modelRepository.findAll() ;
-		List<Model> countriesList = new ArrayList<Model>() ;
+		List<Model> countriesList = new ArrayList<>() ;
 		countries.forEach(countriesList::add) ;
 		return countriesList ;
 	}

@@ -12,14 +12,12 @@ public class InsuranceContractService {
 	private InsuranceContractRepository insuranceContractRepository ;
 	
 	public InsuranceContract create (InsuranceContract insuranceContract) {
-		InsuranceContract savedInsuranceContract  = insuranceContractRepository.save(insuranceContract) ;
-		return savedInsuranceContract ;
+		return insuranceContractRepository.save(insuranceContract) ;
 	}
 	
 	
 	public InsuranceContract modify (InsuranceContract insuranceContract) {
-		InsuranceContract savedInsuranceContract  = insuranceContractRepository.save(insuranceContract) ;
-		return savedInsuranceContract ;
+		return insuranceContractRepository.save(insuranceContract) ;
 	}
 	
 	
@@ -29,14 +27,13 @@ public class InsuranceContractService {
 	
 	
 	public InsuranceContract get (Long id) {
-		InsuranceContract savedInsuranceContract  = insuranceContractRepository.findById(id).orElseGet(null) ;
-		return savedInsuranceContract ;
+		return insuranceContractRepository.findById(id).orElseThrow(NullPointerException::new)  ;
 	}
 	
 	
 	public List<InsuranceContract> getAll () {
 		Iterable<InsuranceContract> insuranceContracts  = insuranceContractRepository.findAll() ;
-		List<InsuranceContract> insuranceContractsList = new ArrayList<InsuranceContract>() ;
+		List<InsuranceContract> insuranceContractsList = new ArrayList<>() ;
 		insuranceContracts.forEach(insuranceContractsList::add) ;
 		return insuranceContractsList ;
 	}

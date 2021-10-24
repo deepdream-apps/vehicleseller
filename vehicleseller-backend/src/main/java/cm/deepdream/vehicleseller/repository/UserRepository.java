@@ -4,5 +4,5 @@ import org.springframework.stereotype.Repository;
 import cm.deepdream.vehicleseller.model.User;
 @Repository
 public interface UserRepository extends CrudRepository<User, Long>{
-
+	public User findByEmailAddressAndPassword (String emailAddress, String password) ;
 }

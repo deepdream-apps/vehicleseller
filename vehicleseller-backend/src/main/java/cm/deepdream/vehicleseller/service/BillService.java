@@ -12,14 +12,12 @@ public class BillService {
 	private BillRepository billRepository ;
 	
 	public Bill create (Bill bill) {
-		Bill savedBill  = billRepository.save(bill) ;
-		return savedBill ;
+		return billRepository.save(bill) ;
 	}
 	
 	
 	public Bill modify (Bill bill) {
-		Bill savedBill  = billRepository.save(bill) ;
-		return savedBill ;
+		return billRepository.save(bill) ;
 	}
 	
 	
@@ -29,14 +27,13 @@ public class BillService {
 	
 	
 	public Bill get (Long id) {
-		Bill savedBill  = billRepository.findById(id).orElseGet(null) ;
-		return savedBill ;
+		return billRepository.findById(id).orElseThrow(NullPointerException::new) ;
 	}
 	
 	
 	public List<Bill> getAll () {
 		Iterable<Bill> bills  = billRepository.findAll() ;
-		List<Bill> billsList = new ArrayList<Bill>() ;
+		List<Bill> billsList = new ArrayList<>() ;
 		bills.forEach(billsList::add) ;
 		return billsList ;
 	}

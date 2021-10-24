@@ -12,10 +12,12 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RestController;
+
 import cm.deepdream.vehicleseller.model.Seller;
 import cm.deepdream.vehicleseller.service.SellerService;
 
-@Path("/api/seller")
+@RestController("/api/seller")
 @Singleton
 public class SellerWS {
 	@Autowired

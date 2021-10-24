@@ -12,14 +12,12 @@ public class InsuranceService {
 	private InsuranceRepository insuranceRepository ;
 	
 	public Insurance create (Insurance insurance) {
-		Insurance savedInsurance  = insuranceRepository.save(insurance) ;
-		return savedInsurance ;
+		return insuranceRepository.save(insurance) ;
 	}
 	
 	
 	public Insurance modify (Insurance insurance) {
-		Insurance savedInsurance  = insuranceRepository.save(insurance) ;
-		return savedInsurance ;
+		return insuranceRepository.save(insurance) ;
 	}
 	
 	
@@ -29,14 +27,13 @@ public class InsuranceService {
 	
 	
 	public Insurance get (Long id) {
-		Insurance savedInsurance  = insuranceRepository.findById(id).orElseGet(null) ;
-		return savedInsurance ;
+		return insuranceRepository.findById(id).orElseThrow(NullPointerException::new)  ;
 	}
 	
 	
 	public List<Insurance> getAll () {
 		Iterable<Insurance> insurances  = insuranceRepository.findAll() ;
-		List<Insurance> insurancesList = new ArrayList<Insurance>() ;
+		List<Insurance> insurancesList = new ArrayList<>() ;
 		insurances.forEach(insurancesList::add) ;
 		return insurancesList ;
 	}

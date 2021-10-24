@@ -1,14 +1,13 @@
 package cm.deepdream.vehicleseller.service;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.amazonaws.services.s3.AmazonS3;
-import cm.deepdream.vehicleseller.model.Brand;
-import cm.deepdream.vehicleseller.model.Model;
 import cm.deepdream.vehicleseller.model.Vehicle;
 import cm.deepdream.vehicleseller.repository.VehicleRepository;
-import lombok.extern.slf4j.Slf4j;
 
 @Service
 public class VehicleService {
@@ -18,14 +17,12 @@ public class VehicleService {
 	private AmazonS3 amazonS3 ;
 	
 	public Vehicle create (Vehicle vehicle) {
-		Vehicle savedVehicle  = vehicleRepository.save(vehicle) ;
-		return savedVehicle ;
+		return vehicleRepository.save(vehicle) ;
 	}
 	
 	
 	public Vehicle modify (Vehicle vehicle) {
-		Vehicle savedVehicle  = vehicleRepository.save(vehicle) ;
-		return savedVehicle ;
+		return vehicleRepository.save(vehicle) ;
 	}
 	
 	
@@ -34,22 +31,16 @@ public class VehicleService {
 	}
 	
 	
-	public Vehicle get (Long id) {
-		Vehicle savedVehicle  = vehicleRepository.findById(id).orElseGet(null) ;
-		return savedVehicle ;
+	public Optional<Vehicle> get (Long id) {
+		return vehicleRepository.findById(id)  ;
 	}
 	
-	
-	public List<Vehicle> get (Brand brand, Model model, Long yearFrom, String fuel, Long yearTo, Long mileageMin, Long mileageMax, 
-			Long priceMin, Long priceMax, int choice) {
-		List<Vehicle> listVehicles = null ;
-		return listVehicles ;
-	}
+
 	
 	
 	public List<Vehicle> getAll () {
 		Iterable<Vehicle> vehicles  = vehicleRepository.findAll() ;
-		List<Vehicle> vehiclesList = new ArrayList<Vehicle>() ;
+		List<Vehicle> vehiclesList = new ArrayList<>() ;
 		vehicles.forEach(vehiclesList::add) ;
 		return vehiclesList ;
 	}

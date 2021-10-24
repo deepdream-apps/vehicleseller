@@ -15,14 +15,12 @@ public class VehicleAssignmentService {
 	private VehicleAssignmentRepository vehicleAssignmentRepository ;
 	
 	public VehicleAssignment create (VehicleAssignment vehicleAssignment) {
-		VehicleAssignment savedVehicleAssignment  = vehicleAssignmentRepository.save(vehicleAssignment) ;
-		return savedVehicleAssignment ;
+		return vehicleAssignmentRepository.save(vehicleAssignment) ;
 	}
 	
 	
 	public VehicleAssignment modify (VehicleAssignment vehicleAssignment) {
-		VehicleAssignment savedVehicleAssignment  = vehicleAssignmentRepository.save(vehicleAssignment) ;
-		return savedVehicleAssignment ;
+		return vehicleAssignmentRepository.save(vehicleAssignment) ;
 	}
 	
 	
@@ -32,14 +30,13 @@ public class VehicleAssignmentService {
 	
 	
 	public VehicleAssignment get (Long id) {
-		VehicleAssignment savedVehicleAssignment  = vehicleAssignmentRepository.findById(id).orElseGet(null) ;
-		return savedVehicleAssignment ;
+		return vehicleAssignmentRepository.findById(id).orElseThrow(NullPointerException::new)  ;
 	}
 	
 	
 	public List<VehicleAssignment> getAll () {
 		Iterable<VehicleAssignment> vehicleAssignments  = vehicleAssignmentRepository.findAll() ;
-		List<VehicleAssignment> vehicleAssignmentsList = new ArrayList<VehicleAssignment>() ;
+		List<VehicleAssignment> vehicleAssignmentsList = new ArrayList<>() ;
 		vehicleAssignments.forEach(vehicleAssignmentsList::add) ;
 		return vehicleAssignmentsList ;
 	}

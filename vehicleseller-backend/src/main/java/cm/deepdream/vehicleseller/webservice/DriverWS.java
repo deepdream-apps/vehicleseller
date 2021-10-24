@@ -1,51 +1,40 @@
 package cm.deepdream.vehicleseller.webservice;
-import java.net.URISyntaxException;
 import java.util.List;
-import javax.inject.Singleton;
-import javax.validation.ConstraintViolationException;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import cm.deepdream.vehicleseller.model.Driver;
 import cm.deepdream.vehicleseller.service.DriverService;
-@Path("/api/driver")
-@Singleton
+
+@RestController
+@RequestMapping("/api/driver")
 public class DriverWS {
 	@Autowired
 	private DriverService driverService ;
 	
 	
-	@POST
-	@Path("/add")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response addDriver(Driver driver) throws URISyntaxException {
-		try {
-			Driver newDriver = driverService.create(driver) ;
-			return Response.ok(newDriver).build();
-		}catch(ConstraintViolationException ex) {
-			return Response.serverError().build() ;
-		}
+	@PostMapping("/add")
+	public ResponseEntity<Driver> addDriver(@RequestBody Driver driver) {
+		Driver newDriver = driverService.create(driver) ;
+		return ResponseEntity.ok(newDriver) ;
 	}
 	
 	
-	@PUT
-	@Path("/update/{id}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateDriver(@PathParam("id") Long id, Driver driver) throws URISyntaxException {
-	    Driver existingDriver = driverService.get(id) ;
-	    if(existingDriver == null) {
-	    	return Response.status(400).build();
+	@PutMapping("/update")
+	public ResponseEntity<Driver> updateDriver(@RequestBody Driver driver) {
+	    Optional<Driver> optDriver = driverService.get(driver.getId()) ;
+	    if(optDriver.isEmpty()) {
+	    	return ResponseEntity.badRequest().build();
 	    }
+	    Driver existingDriver = optDriver.get() ;
 	    existingDriver.setRegistrationNumber(driver.getRegistrationNumber());
 	    existingDriver.setBirthDay(driver.getBirthDay());
 	    existingDriver.setDriverLicence(driver.getDriverLicence());
@@ -53,42 +42,35 @@ public class DriverWS {
 	    existingDriver.setLastName(driver.getLastName()) ;
 	    existingDriver.setPhoto(driver.getPhoto());
 	    Driver upadatedDriver = driverService.create(existingDriver) ;
-	    return Response.ok(upadatedDriver).build();
+	    return ResponseEntity.ok(upadatedDriver) ;
 	}
 	
 	
-	
-	@DELETE
-	@Path("/id/{id}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response deleteDriver(@PathParam("id") Long id) throws URISyntaxException {
-	    Driver existingDriver = driverService.get(id) ;
-	    if(existingDriver == null) {
-	    	return Response.status(400).build();
+	@DeleteMapping("/id/{id}")
+	public ResponseEntity deleteDriver(@PathVariable("id") Long id) {
+	    Optional<Driver> optDriver = driverService.get(id) ;
+	    if(optDriver.isEmpty()) {
+	    	return ResponseEntity.noContent().build();
 	    }
-	    driverService.delete(existingDriver) ;
-	    return Response.ok(1).build();
+	    driverService.delete(optDriver.get()) ;
+	    return ResponseEntity.ok().build();
 	}
 	
 	
 	
-	@GET
-	@Path("/id/{id}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getDriver(@PathParam("id") Long id) throws URISyntaxException {
-	    Driver existingDriver = driverService.get(id) ;
-	    if(existingDriver == null) {
-	    	return Response.noContent().build();
+	@GetMapping("/id/{id}")
+	public ResponseEntity<Driver> getDriver(@PathVariable("id") Long id) {
+	    Optional<Driver> optDriver = driverService.get(id) ;
+	    if(optDriver.isEmpty()) {
+	    	return ResponseEntity.noContent().build();
 	    }
-	    return Response.ok(existingDriver).build();
+	    return ResponseEntity.ok(optDriver.get()) ;
 	}
 	
 	
-	@GET
-	@Path("/all")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAllDrivers() throws URISyntaxException {
+	@GetMapping("/all")
+	public ResponseEntity<List<Driver>> getAllDrivers()  {
 	    List<Driver> listCountries = driverService.getAll() ;
-	    return Response.ok(listCountries).build();
+	    return ResponseEntity.ok(listCountries) ;
 	}
 }

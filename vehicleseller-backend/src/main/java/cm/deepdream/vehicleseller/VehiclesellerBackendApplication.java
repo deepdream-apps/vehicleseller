@@ -1,14 +1,10 @@
 package cm.deepdream.vehicleseller;
-import java.security.Principal;
+import java.util.function.Predicate;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.env.Environment;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -17,12 +13,15 @@ import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-
-@RestController
+import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+@EnableSwagger2
 @SpringBootApplication
 public class VehiclesellerBackendApplication {
-	@Autowired
-	private Environment env ;
 	@Value("${app.vehicleseller.aws.accessKey}")
 	private String accessKey ;
 	@Value("${app.vehicleseller.aws.secretKey}")
@@ -37,7 +36,6 @@ public class VehiclesellerBackendApplication {
 
 
 	public static void main(String[] args) {
-		
 		SpringApplication.run(VehiclesellerBackendApplication.class, args);
 	}
 	
@@ -67,17 +65,29 @@ public class VehiclesellerBackendApplication {
 		};
 	}
 	
-	@GetMapping("/user")
-    public Principal user(Principal p){
-        return p;
-    }
 	
 	@Bean
 	public RestTemplate restTemplate() {
-		RestTemplate restTemplate = new RestTemplate() ;
-		return restTemplate ;
+		return new RestTemplate() ;
 	}
 	
-	//https://howtodoinjava.com/spring-boot2/spring-cors-configuration/
+	@Bean
+    public Docket api() {
+        return new Docket(DocumentationType.SWAGGER_2)
+        		.apiInfo(apiInfo())
+        		.select()
+                	.apis(RequestHandlerSelectors.basePackage("cm.deepdream.vehicleseller.webservice"))
+                	.paths(p -> p.startsWith("/api"))
+                .build();
+    }
+	
+	
+	private ApiInfo apiInfo() {
+		return new ApiInfoBuilder().title("Vehicle Seller API")
+				.description("JavaInUse API reference for developers")
+				.termsOfServiceUrl("http://javainuse.com")
+				//.contact("javainuse@gmail.com").license("JavaInUse License")
+				.licenseUrl("javainuse@gmail.com").version("1.0").build();
+	}
 
 }

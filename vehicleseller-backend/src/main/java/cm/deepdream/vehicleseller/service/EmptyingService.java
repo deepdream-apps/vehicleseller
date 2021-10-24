@@ -12,14 +12,12 @@ public class EmptyingService {
 	private EmptyingRepository emptyingRepository ;
 	
 	public Emptying create (Emptying emptying) {
-		Emptying savedEmptying  = emptyingRepository.save(emptying) ;
-		return savedEmptying ;
+		return emptyingRepository.save(emptying) ;
 	}
 	
 	
 	public Emptying modify (Emptying emptying) {
-		Emptying savedEmptying  = emptyingRepository.save(emptying) ;
-		return savedEmptying ;
+		return emptyingRepository.save(emptying) ;
 	}
 	
 	
@@ -29,14 +27,13 @@ public class EmptyingService {
 	
 	
 	public Emptying get (Long id) {
-		Emptying savedEmptying  = emptyingRepository.findById(id).orElseGet(null) ;
-		return savedEmptying ;
+		return emptyingRepository.findById(id).orElseThrow(NullPointerException::new)  ;
 	}
 	
 	
 	public List<Emptying> getAll () {
 		Iterable<Emptying> emptyings  = emptyingRepository.findAll() ;
-		List<Emptying> emptyingsList = new ArrayList<Emptying>() ;
+		List<Emptying> emptyingsList = new ArrayList<>() ;
 		emptyings.forEach(emptyingsList::add) ;
 		return emptyingsList ;
 	}

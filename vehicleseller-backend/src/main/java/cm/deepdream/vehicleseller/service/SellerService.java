@@ -10,34 +10,31 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SellerService {
 	@Autowired
-	private SellerRepository SellerRepository ;
+	private SellerRepository sellerRepository ;
 	
-	public Seller create (Seller Seller) {
-		Seller savedSeller  = SellerRepository.save(Seller) ;
-		return savedSeller ;
+	public Seller create (Seller seller) {
+		return sellerRepository.save(seller) ;
 	}
 	
 	
-	public Seller modify (Seller Seller) {
-		Seller savedSeller  = SellerRepository.save(Seller) ;
-		return savedSeller ;
+	public Seller modify (Seller seller) {
+		return sellerRepository.save(seller) ;
 	}
 	
 	
 	public void delete(Seller Seller) {
-		SellerRepository.delete(Seller);
+		sellerRepository.delete(Seller);
 	}
 	
 	
 	public Seller get (Long id) {
-		Seller savedSeller  = SellerRepository.findById(id).orElseGet(null) ;
-		return savedSeller ;
+		return sellerRepository.findById(id).orElseThrow(NullPointerException::new)  ;
 	}
 	
 	
 	public List<Seller> getAll () {
-		Iterable<Seller> countries  = SellerRepository.findAll() ;
-		List<Seller> countriesList = new ArrayList<Seller>() ;
+		Iterable<Seller> countries  = sellerRepository.findAll() ;
+		List<Seller> countriesList = new ArrayList<>() ;
 		countries.forEach(countriesList::add) ;
 		return countriesList ;
 	}

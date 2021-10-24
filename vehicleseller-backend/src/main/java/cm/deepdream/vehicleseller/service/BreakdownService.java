@@ -12,14 +12,12 @@ public class BreakdownService {
 	private BreakdownRepository breakdownRepository ;
 	
 	public Breakdown create (Breakdown breakdown) {
-		Breakdown savedBreakdown  = breakdownRepository.save(breakdown) ;
-		return savedBreakdown ;
+		return breakdownRepository.save(breakdown) ;
 	}
 	
 	
 	public Breakdown modify (Breakdown breakdown) {
-		Breakdown savedBreakdown  = breakdownRepository.save(breakdown) ;
-		return savedBreakdown ;
+		return breakdownRepository.save(breakdown) ;
 	}
 	
 	
@@ -29,14 +27,13 @@ public class BreakdownService {
 	
 	
 	public Breakdown get (Long id) {
-		Breakdown savedBreakdown  = breakdownRepository.findById(id).orElseGet(null) ;
-		return savedBreakdown ;
+		return breakdownRepository.findById(id).orElseThrow(NullPointerException::new) ;
 	}
 	
 	
 	public List<Breakdown> getAll () {
 		Iterable<Breakdown> breakdowns  = breakdownRepository.findAll() ;
-		List<Breakdown> breakdownsList = new ArrayList<Breakdown>() ;
+		List<Breakdown> breakdownsList = new ArrayList<>() ;
 		breakdowns.forEach(breakdownsList::add) ;
 		return breakdownsList ;
 	}

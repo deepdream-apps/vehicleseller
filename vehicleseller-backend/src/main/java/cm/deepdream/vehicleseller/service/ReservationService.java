@@ -1,6 +1,8 @@
 package cm.deepdream.vehicleseller.service;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import cm.deepdream.vehicleseller.model.Reservation;
@@ -12,14 +14,13 @@ public class ReservationService {
 	private ReservationRepository reservationRepository ;
 	
 	public Reservation create (Reservation reservation) {
-		Reservation savedReservation  = reservationRepository.save(reservation) ;
-		return savedReservation ;
+		reservation.setDate(LocalDateTime.now());
+		return reservationRepository.save(reservation) ;
 	}
 	
 	
 	public Reservation modify (Reservation reservation) {
-		Reservation savedReservation  = reservationRepository.save(reservation) ;
-		return savedReservation ;
+		return reservationRepository.save(reservation) ;
 	}
 	
 	
@@ -28,15 +29,14 @@ public class ReservationService {
 	}
 	
 	
-	public Reservation get (Long id) {
-		Reservation savedReservation  = reservationRepository.findById(id).orElseGet(null) ;
-		return savedReservation ;
+	public Optional<Reservation> get (Long id) {
+		return reservationRepository.findById(id)  ;
 	}
 	
 	
 	public List<Reservation> getAll () {
 		Iterable<Reservation> reservations  = reservationRepository.findAll() ;
-		List<Reservation> reservationsList = new ArrayList<Reservation>() ;
+		List<Reservation> reservationsList = new ArrayList<>() ;
 		reservations.forEach(reservationsList::add) ;
 		return reservationsList ;
 	}

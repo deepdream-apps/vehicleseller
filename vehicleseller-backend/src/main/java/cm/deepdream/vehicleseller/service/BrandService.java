@@ -13,14 +13,12 @@ public class BrandService {
 	private BrandRepository brandRepository ;
 	
 	public Brand create (Brand brand) {
-		Brand savedBrand  = brandRepository.save(brand) ;
-		return savedBrand ;
+		return brandRepository.save(brand) ;
 	}
 	
 	
 	public Brand modify (Brand brand) {
-		Brand savedBrand  = brandRepository.save(brand) ;
-		return savedBrand ;
+		return brandRepository.save(brand) ;
 	}
 	
 	
@@ -30,14 +28,13 @@ public class BrandService {
 	
 	
 	public Brand get (Long id) {
-		Brand savedBrand  = brandRepository.findById(id).orElseGet(null) ;
-		return savedBrand ;
+		return brandRepository.findById(id).orElseThrow(NullPointerException::new)  ;
 	}
 	
 	
 	public List<Brand> getAll () {
 		Iterable<Brand> brands  = brandRepository.findAll() ;
-		List<Brand> brandsList = new ArrayList<Brand>() ;
+		List<Brand> brandsList = new ArrayList<>() ;
 		brands.forEach(brandsList::add) ;
 		return brandsList ;
 	}

@@ -1,7 +1,6 @@
 package cm.deepdream.vehicleseller.service;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import cm.deepdream.vehicleseller.model.Country;
@@ -15,14 +14,12 @@ public class CountryService {
 	private CountryRepository countryRepository ;
 	
 	public Country create (Country country) {
-		Country savedCountry  = countryRepository.save(country) ;
-		return savedCountry ;
+		return countryRepository.save(country) ;
 	}
 	
 	
 	public Country modify (Country country) {
-		Country savedCountry  = countryRepository.save(country) ;
-		return savedCountry ;
+		return countryRepository.save(country) ;
 	}
 	
 	
@@ -32,14 +29,13 @@ public class CountryService {
 	
 	
 	public Country get (Long id) {
-		Country savedCountry  = countryRepository.findById(id).orElseGet(null) ;
-		return savedCountry ;
+		return countryRepository.findById(id).orElseThrow(NullPointerException::new) ;
 	}
 	
 	
 	public List<Country> getAll () {
 		Iterable<Country> countries  = countryRepository.findAll() ;
-		List<Country> countriesList = new ArrayList<Country>() ;
+		List<Country> countriesList = new ArrayList<>() ;
 		countries.forEach(countriesList::add) ;
 		return countriesList ;
 	}

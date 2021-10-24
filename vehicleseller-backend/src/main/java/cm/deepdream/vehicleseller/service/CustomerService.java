@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
@@ -14,6 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import cm.deepdream.vehicleseller.enums.RoleUser;
+import cm.deepdream.vehicleseller.enums.StatusUser;
 import cm.deepdream.vehicleseller.model.Customer;
 import cm.deepdream.vehicleseller.model.User;
 import cm.deepdream.vehicleseller.repository.CustomerRepository;
@@ -37,17 +41,22 @@ public class CustomerService {
 	@Value("${app.contextPath}")
 	private String contextPath ;
 	
+	/**
+	 * Create a customer, the related user and send a confirmation email to the user.
+	 * @param customer 
+	 * @return the created customer
+	 */
 	public Customer create (final Customer customer) {
 		final Customer savedCustomer  = customerRepository.save(customer) ;
 		
 		User user = new User(null, customer.getEmailAddress(), customer.getFirstName(), customer.getLastName(), 
-				"Usager", null, LocalDateTime.now(), LocalDateTime.now().plusMonths(3L), "Not Active") ;
+				RoleUser.CUSTOMER.getLabel(), null, LocalDateTime.now(), StatusUser.NOT_ACTIVATED.getLabel()) ;
 		
 		final User savedUser = userRepository.save(user) ;
 		
-		final Map<String, Object> templateModel = new HashMap<String, Object>() ;
+		final Map<String, Object> templateModel = new HashMap<>() ;
 		templateModel.put("name", customer.getFirstName()+ " "+  customer.getLastName()) ;
-		templateModel.put("link", contextPath + "/user/definepassword") ;
+		templateModel.put("link", contextPath + "/user/definepassword/"+savedUser.getId()+"/"+savedCustomer.getEmailAddress()) ;
 		try {
 			ExecutorService executorService = Executors.newSingleThreadExecutor() ;
 			executorService.execute(() -> {
@@ -68,8 +77,7 @@ public class CustomerService {
 	
 	
 	public Customer modify (Customer customer) {
-		Customer savedCustomer  = customerRepository.save(customer) ;
-		return savedCustomer ;
+		return customerRepository.save(customer) ;
 	}
 	
 	
@@ -78,15 +86,18 @@ public class CustomerService {
 	}
 	
 	
-	public Customer get (Long id) {
-		Customer savedCustomer  = customerRepository.findById(id).orElseGet(null) ;
-		return savedCustomer ;
+	public Optional<Customer> get (Long id) {
+		return customerRepository.findById(id)  ;
+	}
+	
+	public Boolean checksIfEmailAddressExists (String emailAddress) {
+		return customerRepository.existsByEmailAddress(emailAddress) ;
 	}
 	
 	
 	public List<Customer> getAll () {
 		Iterable<Customer> customers  = customerRepository.findAll() ;
-		List<Customer> customersList = new ArrayList<Customer>() ;
+		List<Customer> customersList = new ArrayList<>() ;
 		customers.forEach(customersList::add) ;
 		return customersList ;
 	}

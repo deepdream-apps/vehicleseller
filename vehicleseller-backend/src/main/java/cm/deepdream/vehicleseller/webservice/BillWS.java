@@ -1,90 +1,77 @@
 package cm.deepdream.vehicleseller.webservice;
-import java.net.URISyntaxException;
 import java.util.List;
-import javax.inject.Singleton;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Response;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import cm.deepdream.vehicleseller.model.Bill;
 import cm.deepdream.vehicleseller.service.BillService;
-
-@Path("/api/bill")
-@Singleton
+@RestController
+@RequestMapping("/api/bill")
 public class BillWS {
 	@Autowired
 	private BillService billService ;
 	
 	
-	@POST
-	@Path("/add/{id}")
-	@Consumes("application/json")
-	@Produces("application/json")
-	public Response addBill(Bill bill) throws URISyntaxException {
+	@PostMapping("/add")
+	public ResponseEntity<Bill> addBill(@RequestBody  Bill bill) {
 	    if(bill.getLabel() == null || bill.getLabel().equals("")) {
-	            return Response.status(400).entity("Please provide all mandatory inputs").build();
+	            return ResponseEntity.badRequest().build() ;
 	     }
 	    Bill newBill = billService.create(bill) ;
-	    return Response.ok(newBill).build();
+	    return ResponseEntity.ok(newBill);
 	}
 	
 	
-	@PUT
-	@Path("/update/{id}")
-	@Consumes("application/json")
-	@Produces("application/json")
-	public Response updateBill(@PathParam("id") Long id, Bill bill) throws URISyntaxException {
-	    if(bill.getLabel() == null || bill.getLabel().equals("")) {
-	         return Response.status(400).build();
-	     }
-	    Bill existingBill = billService.get(id) ;
+	@PutMapping("/update/{id}")
+	public ResponseEntity<Bill> updateBill(@RequestBody Bill bill)  {
+	    if(bill.getLabel() == null || bill.getLabel().isBlank()) {
+	         return ResponseEntity.badRequest().build() ;
+	    }
+	    Bill existingBill = billService.get(bill.getId()) ;
 	    if(existingBill == null) {
-	    	return Response.status(400).build();
+	    	return ResponseEntity.badRequest().build() ;
 	    }
 	    existingBill.setLabel(bill.getLabel());
 	    Bill upadatedBill = billService.create(existingBill) ;
-	    return Response.ok(upadatedBill).build();
+	    return ResponseEntity.ok(upadatedBill) ;
 	}
 	
 	
 	
-	@DELETE
-	@Path("/{id}")
-	@Consumes("application/json")
-	public Response deleteBill(@PathParam("id") Long id) throws URISyntaxException {
+	@DeleteMapping("/id/{id}")
+	public ResponseEntity deleteBill(@PathVariable("id") Long id) {
 	    Bill existingBill = billService.get(id) ;
 	    if(existingBill == null) {
-	    	return Response.status(400).build();
+	    	return ResponseEntity.badRequest().build() ;
 	    }
 	    billService.delete(existingBill) ;
-	    return Response.ok(1).build();
+	    return ResponseEntity.ok().build();
 	}
 	
 	
 	
-	@GET
-	@Path("/id/{id}")
-	@Produces("application/json")
-	public Response getBill(@PathParam("id") Long id) throws URISyntaxException {
-	    Bill existingBill = billService.get(id) ;
-	    if(existingBill == null) {
-	    	return Response.noContent().build();
-	    }
-	    return Response.ok(existingBill).build();
+	@GetMapping("/id/{id}")
+	public ResponseEntity<Bill> getBill(@PathVariable("id") Long id) {
+		try {
+			Bill existingBill = billService.get(id) ;
+			return ResponseEntity.ok(existingBill) ;
+		}catch(NullPointerException e) {
+			return ResponseEntity.badRequest().build();
+		}
 	}
 	
 	
-	@GET
-	@Path("/all")
-	@Produces("application/json")
-	public Response getAllBills() throws URISyntaxException {
+	@GetMapping("/all")
+	public ResponseEntity<List<Bill>> getAllBills()  {
 	    List<Bill> listBills = billService.getAll() ;
-	    return Response.ok(listBills).build();
+	    return ResponseEntity.ok(listBills);
 	}
 }

@@ -14,14 +14,12 @@ public class MaintenanceOperationService {
 	private MaintenanceOperationRepository maintenanceOperationRepository ;
 	
 	public MaintenanceOperation create (MaintenanceOperation maintenanceOperation) {
-		MaintenanceOperation savedMaintenanceOperation  = maintenanceOperationRepository.save(maintenanceOperation) ;
-		return savedMaintenanceOperation ;
+		return maintenanceOperationRepository.save(maintenanceOperation) ;
 	}
 	
 	
 	public MaintenanceOperation modify (MaintenanceOperation maintenanceOperation) {
-		MaintenanceOperation savedMaintenanceOperation  = maintenanceOperationRepository.save(maintenanceOperation) ;
-		return savedMaintenanceOperation ;
+		return maintenanceOperationRepository.save(maintenanceOperation) ;
 	}
 	
 	
@@ -31,14 +29,13 @@ public class MaintenanceOperationService {
 	
 	
 	public MaintenanceOperation get (Long id) {
-		MaintenanceOperation savedMaintenanceOperation  = maintenanceOperationRepository.findById(id).orElseGet(null) ;
-		return savedMaintenanceOperation ;
+		return maintenanceOperationRepository.findById(id).orElseThrow(NullPointerException::new)  ;
 	}
 	
 	
 	public List<MaintenanceOperation> getAll () {
 		Iterable<MaintenanceOperation> countries  = maintenanceOperationRepository.findAll() ;
-		List<MaintenanceOperation> countriesList = new ArrayList<MaintenanceOperation>() ;
+		List<MaintenanceOperation> countriesList = new ArrayList<>() ;
 		countries.forEach(countriesList::add) ;
 		return countriesList ;
 	}

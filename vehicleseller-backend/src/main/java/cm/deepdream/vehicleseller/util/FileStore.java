@@ -2,14 +2,12 @@ package cm.deepdream.vehicleseller.util;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
+import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.amazonaws.AmazonServiceException;
@@ -21,7 +19,7 @@ import com.amazonaws.util.IOUtils;
 
 @Component
 public class FileStore {
-	private Logger logger = Logger.getLogger(FileStore.class.getName()) ;
+
 	@Autowired
 	private  AmazonS3 amazonS3;
 
@@ -39,25 +37,24 @@ public class FileStore {
         }
     }
 
-    public byte[] download(String path, String key) {
-        try {
+    public byte[] download(String path, String key) throws IOException {
             S3Object object = amazonS3.getObject(path, key);
             S3ObjectInputStream objectContent = object.getObjectContent();
             byte[] bytes = IOUtils.toByteArray(objectContent) ;
-            try{
-            	Path logoPath = Paths.get(path, key) ;
-            	try{
-      	            Files.createFile(logoPath);
-      	        } catch (FileAlreadyExistsException ex) {}
-            	FileOutputStream outputStream = new FileOutputStream(logoPath.toFile()) ;
-            	outputStream.write(bytes);
-            	outputStream.close();
-            }catch(IOException ex) {
-            	logger.log(Level.SEVERE, ex.getMessage());
-            }
+            
+            Path logoPath = Paths.get(path, key) ;
+            if(! Files.exists(logoPath, LinkOption.NOFOLLOW_LINKS)) 
+            	Files.createFile(logoPath); 
+            
+            writeStream(logoPath.toFile().getAbsolutePath(), bytes) ;
             return bytes ;
-        } catch (AmazonServiceException | IOException e) {
-            throw new IllegalStateException("Failed to download the file", e);
+    }
+    
+    private void writeStream (String fileName, byte[] bytes) throws IOException{
+    	try(FileOutputStream outputStream = new FileOutputStream(fileName) ;){
+        	outputStream.write(bytes);
+        }catch(IOException ex) {
+        	throw ex ;
         }
     }
 }
