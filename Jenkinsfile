@@ -10,6 +10,12 @@ pipeline {
     }
 
     stages{    
+	    
+	stage('Code Analysis'){
+		steps{
+			mvn sonar:sonar
+		}
+	}
        
         stage('Build'){
 			steps{
