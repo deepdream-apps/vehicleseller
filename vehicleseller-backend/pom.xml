@@ -146,11 +146,16 @@
 				</configuration>
 			</plugin>
 			<plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>3.4.0.905</version>
+            </plugin>
+			<plugin>
 				<groupId>com.spotify</groupId>
 				<artifactId>dockerfile-maven-plugin</artifactId>
 				 <version>1.4.8</version>
 				<configuration>
-					<repository>docker.io/deepdreamapps/vehicleseller</repository>
+					<repository>docker.io/deepdreamapps/vehicleseller-backend</repository>
 					<tag>${project.version}</tag>
 					<buildArg>
 						<JAR_FILE>target/${project.build.finalName}-${project.version}.jar</JAR_FILE>
@@ -167,11 +172,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-                <groupId>org.sonarsource.scanner.maven</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-                <version>3.4.0.905</version>
-            </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>

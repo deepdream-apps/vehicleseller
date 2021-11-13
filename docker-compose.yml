@@ -1,0 +1,29 @@
+version: "0.0.1-SNAPSHOT"
+
+services:
+  vehicleseller-backend:
+    image: docker.io/deepdreamapps/vehicleseller-backend:0.0.1-SNAPSHOT
+    container_name: vehicleseller-backend
+    build:
+      context: ./vehicleseller-backend
+      args:
+        - APP_NAME=product-service
+        - APP_VERSION=0.0.1
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+    expose:
+      - 9090
+    ports:
+      - 9090:9090
+  vehicleseller-webapp:
+    image: docker.io/deepdreamapps/vehicleseller-webapp:1.0
+    container_name: vehicleseller-webapp
+    build:
+      context: ./vehicleseller-webapp
+      args:
+        - APP_NAME=vehicleseller-webapp
+        - APP_VERSION=1.0
+    expose:
+      - 80
+    ports:
+      - 80:80
