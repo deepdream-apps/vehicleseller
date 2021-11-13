@@ -13,7 +13,7 @@ pipeline {
 	    
 	stage('Code Analysis'){
 		steps{
-			mvn sonar:sonar
+			mvn clean sonar:sonar
 		}
 	}
        
