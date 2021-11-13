@@ -1,7 +1,6 @@
 package cm.deepdream.vehicleseller.webservice;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,10 +16,14 @@ import cm.deepdream.vehicleseller.service.DriverService;
 @RestController
 @RequestMapping("/api/driver")
 public class DriverWS {
-	@Autowired
 	private DriverService driverService ;
 	
 	
+	public DriverWS(DriverService driverService) {
+		this.driverService = driverService;
+	}
+
+
 	@PostMapping("/add")
 	public ResponseEntity<Driver> addDriver(@RequestBody Driver driver) {
 		Driver newDriver = driverService.create(driver) ;
@@ -34,13 +37,17 @@ public class DriverWS {
 	    if(optDriver.isEmpty()) {
 	    	return ResponseEntity.badRequest().build();
 	    }
+	    
 	    Driver existingDriver = optDriver.get() ;
 	    existingDriver.setRegistrationNumber(driver.getRegistrationNumber());
 	    existingDriver.setBirthDay(driver.getBirthDay());
 	    existingDriver.setDriverLicence(driver.getDriverLicence());
 	    existingDriver.setFirstName(driver.getFirstName());
 	    existingDriver.setLastName(driver.getLastName()) ;
-	    existingDriver.setPhoto(driver.getPhoto());
+	    existingDriver.setDriverLicence(driver.getDriverLicence()) ;
+	    existingDriver.setStatus(driver.getStatus()) ;
+	    existingDriver.setPhoneNumber(driver.getPhoneNumber()) ;
+	    existingDriver.setEmailAddress(driver.getEmailAddress()) ;
 	    Driver upadatedDriver = driverService.create(existingDriver) ;
 	    return ResponseEntity.ok(upadatedDriver) ;
 	}
@@ -54,6 +61,17 @@ public class DriverWS {
 	    }
 	    driverService.delete(optDriver.get()) ;
 	    return ResponseEntity.ok().build();
+	}
+	
+	
+	
+	@GetMapping("/email-address/{emailAdress}")
+	public ResponseEntity<Driver> getDriverByEmailAddress(@PathVariable("emailAdress") String emailAdress) {
+	    Optional<Driver> optDriver = driverService.getByEmailAddress(emailAdress) ;
+	    if(optDriver.isEmpty()) {
+	    	return ResponseEntity.noContent().build();
+	    }
+	    return ResponseEntity.ok(optDriver.get()) ;
 	}
 	
 	

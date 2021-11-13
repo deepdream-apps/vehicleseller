@@ -1,12 +1,13 @@
 package cm.deepdream.vehicleseller.model;
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,15 +15,22 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Vehicle {
 	@Id
 	@GeneratedValue
 	@Column(name = "id")
 	private Long id ;
 	
+	@NotNull
 	@Column(name = "registration_number")
 	private String registrationNumber ;
 	
+	@NotNull
+	@Column(name = "chassis_number")
+	private String chassisNumber ;
+	
+	@NotNull
 	@ManyToOne
 	@JoinColumn (name = "id_model")
 	private Model model ;

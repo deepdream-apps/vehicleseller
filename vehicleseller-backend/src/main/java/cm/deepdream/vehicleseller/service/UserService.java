@@ -3,17 +3,25 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import cm.deepdream.vehicleseller.enums.StatusUser;
 import cm.deepdream.vehicleseller.model.User;
 import cm.deepdream.vehicleseller.repository.UserRepository;
+import lombok.extern.log4j.Log4j2;
 
+@Transactional
 @Service
+@Log4j2
 public class UserService {
-	@Autowired
 	private UserRepository userRepository ;
 	
+	
+	public UserService(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
+
+
 	public User create (User user) {
 		user.setCreationDate(LocalDateTime.now());
 		return userRepository.save(user) ;
@@ -25,8 +33,20 @@ public class UserService {
 	}
 	
 	
-	public Optional<User> authenticate (String emailAddress, String password) {
-		User user = userRepository.findByEmailAddressAndPassword(emailAddress, password);
+	public User suspend (User user) {
+		user.setStatus(StatusUser.SUSPENDED.getLabel());
+		return userRepository.save(user) ;
+	}
+	
+	
+	public User activate (User user) {
+		user.setStatus(StatusUser.ACTIVATED.getLabel());
+		return userRepository.save(user) ;
+	}
+	
+	
+	public Optional<User> authenticate (final String emailAddress, final char[] password) {
+		User user = userRepository.findByEmailAddress(emailAddress);
 		return Optional.ofNullable(user) ;
 	}
 	

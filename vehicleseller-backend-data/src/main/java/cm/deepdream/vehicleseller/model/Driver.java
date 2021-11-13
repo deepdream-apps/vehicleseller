@@ -12,6 +12,7 @@ import javax.validation.constraints.PastOrPresent;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,6 +20,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Driver {
 	@Id
 	@GeneratedValue
@@ -59,7 +61,5 @@ public class Driver {
 	
 	@Embedded
 	private DriverLicence driverLicence ;
-	
-	@Embedded
-	private Picture photo ;
+
 }

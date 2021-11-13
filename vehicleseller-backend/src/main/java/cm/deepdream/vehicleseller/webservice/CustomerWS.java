@@ -1,7 +1,6 @@
 package cm.deepdream.vehicleseller.webservice;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,10 +16,14 @@ import cm.deepdream.vehicleseller.service.CustomerService;
 @RestController
 @RequestMapping("/api/customer")
 public class CustomerWS {
-	@Autowired
 	private CustomerService customerService ;
 	
 	
+	public CustomerWS(CustomerService customerService) {
+		this.customerService = customerService;
+	}
+
+
 	@PostMapping("/add")
 	public ResponseEntity<Customer> addCustomer(@RequestBody  Customer customer)  {
 	    Customer newCustomer = customerService.create(customer) ;
@@ -35,6 +38,15 @@ public class CustomerWS {
 	    	return ResponseEntity.badRequest().build();
 	    }
 	    Customer existingCustomer = optCustomer.get() ;
+	    existingCustomer.setBirthDay(customer.getBirthDay()) ;
+	    existingCustomer.setCountry(customer.getCountry()) ;
+	    existingCustomer.setPhoneNumber(customer.getPhoneNumber()) ;
+	    existingCustomer.setProfession(customer.getProfession()) ;
+	    existingCustomer.setFirstName(customer.getFirstName()) ;
+	    existingCustomer.setLastName(customer.getLastName()) ;
+	    existingCustomer.setGender(customer.getGender()) ;
+	    existingCustomer.setSubscriptionDate(customer.getSubscriptionDate()) ;
+	    existingCustomer.setTown(customer.getTown()) ;
 	    Customer upadatedCustomer = customerService.modify(existingCustomer) ;
 	    return ResponseEntity.ok(upadatedCustomer);
 	}
@@ -54,6 +66,15 @@ public class CustomerWS {
 	@GetMapping("/id/{id}")
 	public ResponseEntity<Customer> getCustomer(@PathVariable("id") Long id)  {
 	    Optional<Customer> optCustomer = customerService.get(id) ;
+	    if(optCustomer.isEmpty()) {
+	    	return ResponseEntity.noContent().build();
+	    }
+	    return ResponseEntity.ok(optCustomer.get()) ;
+	}
+	
+	@GetMapping("/email-address/{emailAddress}")
+	public ResponseEntity<Customer> getCustomer(@PathVariable("emailAddress") String emailAddress)  {
+	    Optional<Customer> optCustomer = customerService.getByEmailAddress(emailAddress) ;
 	    if(optCustomer.isEmpty()) {
 	    	return ResponseEntity.noContent().build();
 	    }

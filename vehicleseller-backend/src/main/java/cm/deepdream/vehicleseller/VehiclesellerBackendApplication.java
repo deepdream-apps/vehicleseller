@@ -1,6 +1,4 @@
 package cm.deepdream.vehicleseller;
-import java.util.function.Predicate;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -29,7 +27,7 @@ public class VehiclesellerBackendApplication {
 	@Value("${app.vehicleseller.aws.regionCode}")
 	private String regionCode ;
 	
-	
+	NullPointerException dd ;
 	public VehiclesellerBackendApplication() {
 		super() ;
 	}

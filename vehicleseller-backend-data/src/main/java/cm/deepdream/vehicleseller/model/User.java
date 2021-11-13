@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import org.springframework.format.annotation.DateTimeFormat;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +14,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class User {
 	@Id
 	@GeneratedValue
@@ -28,20 +30,16 @@ public class User {
 	@Column(name = "last_name")
 	private String lastName ;
 	
-	/**Client, Opérateur, Administrateur, Gérant**/
+	/**Client, Opérateur, Administrateur, Gérant, Chauffeur**/
 	@Column(name = "role_name")
 	private String roleName ;
 	
 	@Column(name = "password")
-	private String password ;
+	private char[] password ;
 	
 	@Column(name = "creation_date")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime creationDate ;
-	
-	@Column(name = "password_expiration_date")
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private LocalDateTime passwordExpirationDate ;
 	
 	@Column(name = "status")
 	private String status ;

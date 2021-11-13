@@ -1,20 +1,9 @@
 package cm.deepdream.vehicleseller.webservice;
-import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-
-import javax.inject.Singleton;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Response;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,22 +13,26 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import cm.deepdream.vehicleseller.enums.StatusReservation;
 import cm.deepdream.vehicleseller.model.Reservation;
 import cm.deepdream.vehicleseller.service.ReservationService;
 @RestController
 @RequestMapping("/api/reservation")
 public class ReservationWS {
-	@Autowired
+	Logger logger = Logger.getLogger(ReservationWS.class.getName()) ;
 	private ReservationService reservationService ;
 	
 	
+	public ReservationWS(ReservationService reservationService) {
+		this.reservationService = reservationService;
+	}
+
+
 	@PostMapping("/add")
-	public ResponseEntity<Reservation> addReservation(@RequestBody  Reservation reservation)  {
+	public ResponseEntity<Reservation> addReservation(@RequestBody  Reservation reservation){
+		logger.info("Reservation = "+ reservation) ;
 		reservation.setDate(LocalDateTime.now()) ;
 		reservation.setStatus(StatusReservation.WAITING.getLabel()) ;
-		reservation.setCustomer(null) ;
 		reservation.setVehicle(null) ;
 	    Reservation newReservation = reservationService.create(reservation) ;
 	    return ResponseEntity.ok(newReservation) ;
@@ -47,18 +40,30 @@ public class ReservationWS {
 	
 	
 	@PutMapping("/update")
-	public ResponseEntity<Reservation> updateReservation(@RequestBody Reservation reservation) throws URISyntaxException {
+	public ResponseEntity<Reservation> updateReservation(@RequestBody Reservation reservation){
 	    Optional<Reservation> optReservation = reservationService.get(reservation.getId()) ;
 	    if(optReservation.isEmpty()) {
 	    	return ResponseEntity.badRequest().build();
 	    }
 	    
 	    Reservation existingRservation = optReservation.get() ;
-	    Reservation upadatedReservation = reservationService.create(existingRservation) ;
+	    Reservation upadatedReservation = reservationService.modify(existingRservation) ;
 	    return ResponseEntity.ok(upadatedReservation);
 	}
 	
 	
+	@PutMapping("/cancel")
+	public ResponseEntity<Reservation> cancelReservation(@RequestBody Reservation reservation){
+		logger.log(Level.INFO, "Cancel the reservation "+reservation) ;
+	    Optional<Reservation> optReservation = reservationService.get(reservation.getId()) ;
+	    if(optReservation.isEmpty()) {
+	    	return ResponseEntity.badRequest().build();
+	    }
+	    
+	    Reservation existingRservation = optReservation.get() ;
+	    Reservation upadatedReservation = reservationService.cancel(existingRservation) ;
+	    return ResponseEntity.ok(upadatedReservation);
+	}
 	
 	@DeleteMapping("/id/{id}")
 	public ResponseEntity deleteReservation(@PathVariable("id") Long id)  {
@@ -68,6 +73,14 @@ public class ReservationWS {
 			return ResponseEntity.noContent().build();
 	    }
 	    reservationService.delete(optReservation.get()) ;
+	    return ResponseEntity.ok().build();
+	}
+	
+	
+	@DeleteMapping("/delete")
+	public ResponseEntity deleteReservation(@RequestBody Reservation reservation)  {
+		logger.log(Level.INFO, "Delete the reservation "+reservation) ;
+	    reservationService.delete(reservation) ;
 	    return ResponseEntity.ok().build();
 	}
 	
