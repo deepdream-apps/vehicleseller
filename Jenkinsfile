@@ -11,11 +11,14 @@ pipeline {
 
     stages{    
 	    
-	stage('Code Analysis'){
-		steps{
-			mvn clean sonar:sonar
+		stage('Code Analysis'){
+			steps{
+				def mvn = tool 'maven';
+				withSonarQubeEnv() {
+					sh "${mvn}/bin/mvn clean verify sonar:sonar"
+				}
+			}
 		}
-	}
        
         stage('Build'){
 			steps{

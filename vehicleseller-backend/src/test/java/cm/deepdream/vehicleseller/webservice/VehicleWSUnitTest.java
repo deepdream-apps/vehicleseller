@@ -175,8 +175,7 @@ public class VehicleWSUnitTest {
 		
 		RequestBuilder mockRequest = MockMvcRequestBuilders.get("/api/vehicle/all")
 	            .contentType(MediaType.APPLICATION_JSON)
-	            .accept(MediaType.APPLICATION_JSON) 
-	            ;
+	            .accept(MediaType.APPLICATION_JSON) ;
 		
 		mockMvc.perform(mockRequest)
         		.andExpect(status().isOk())
